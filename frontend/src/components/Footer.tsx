@@ -1,14 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-import { ContactIcons, SocialIcons, ActionIcons, LogoIcons } from './IconSystem'
+import { useState } from 'react';
+import { useParams } from 'next/navigation';
+import { ContactIcons, SocialIcons, ActionIcons, LogoIcons } from './IconSystem';
+import { getTranslation } from '@/config/translations';
 
 const Footer = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+  
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
     mensaje: ''
-  })
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -32,11 +37,10 @@ const Footer = () => {
           <div className="max-w-4xl mx-auto text-center space-y-12">
             <div className="space-y-6">
               <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-                ¿Querés automatizar <span className="text-gradient">sin complicarte</span>?
+                {getTranslation(currentLocale, 'footer.contact_title')}
               </h2>
               <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto">
-                Agendá una llamada gratuita.<br />
-                Si no te llevo al menos 1 idea clara de ahorro, no seguimos.
+                {getTranslation(currentLocale, 'footer.contact_description')}
               </p>
             </div>
 
@@ -55,7 +59,7 @@ const Footer = () => {
                 <input
                   type="email"
                   name="email"
-                  placeholder="Email"
+                  placeholder={getTranslation(currentLocale, 'footer.placeholder_email')}
                   value={formData.email}
                   onChange={handleInputChange}
                   className="input-field"
@@ -63,7 +67,7 @@ const Footer = () => {
                 />
                 <textarea
                   name="mensaje"
-                  placeholder="Mensaje (opcional)"
+                  placeholder={getTranslation(currentLocale, 'footer.placeholder_message')}
                   value={formData.mensaje}
                   onChange={handleInputChange}
                   rows={3}
@@ -71,7 +75,7 @@ const Footer = () => {
                 />
               </div>
               <button type="submit" className="btn-primary btn-icon-right w-full group">
-                <span>Agendar consultoría</span>
+                <span>{getTranslation(currentLocale, 'footer.send_button')}</span>
                 <ActionIcons.Send 
                   size="sm" 
                   className="transition-transform group-hover:translate-x-1"
@@ -123,7 +127,7 @@ const Footer = () => {
                     className="text-accent-mint"
                     aria-label="Email"
                   />
-                  <span>nicolas@dozo.tech</span>
+                  <span>{getTranslation(currentLocale, 'footer.contact_info.email')}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-text-secondary">
                   <ContactIcons.Phone 
@@ -131,7 +135,7 @@ const Footer = () => {
                     className="text-accent-mint"
                     aria-label="Teléfono"
                   />
-                  <span>+56 9 1234 5678</span>
+                  <span>{getTranslation(currentLocale, 'footer.contact_info.phone')}</span>
                 </div>
                 <div className="flex items-center space-x-3 text-text-secondary">
                   <ContactIcons.MapPin 
@@ -139,45 +143,47 @@ const Footer = () => {
                     className="text-accent-mint"
                     aria-label="Ubicación"
                   />
-                  <span>Santiago, Chile</span>
+                  <span>{getTranslation(currentLocale, 'footer.contact_info.location')}</span>
                 </div>
               </div>
             </div>
 
             {/* Social Links */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-primary mb-4">Seguime</h3>
+              <h3 className="text-lg font-semibold text-text-primary mb-4">
+                {getTranslation(currentLocale, 'footer.social.follow_me')}
+              </h3>
               <div className="flex space-x-4">
-                <a 
-                  href="#" 
-                  className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
-                  aria-label="LinkedIn"
-                >
-                  <SocialIcons.Linkedin 
-                    size="sm"
-                    aria-label="LinkedIn"
-                  />
-                </a>
-                <a 
-                  href="#" 
-                  className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
-                  aria-label="GitHub"
-                >
-                  <SocialIcons.Github 
-                    size="sm"
-                    aria-label="GitHub"
-                  />
-                </a>
-                <a 
-                  href="#" 
-                  className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
-                  aria-label="Twitter"
-                >
-                  <SocialIcons.Twitter 
-                    size="sm"
-                    aria-label="Twitter"
-                  />
-                </a>
+                                  <a 
+                    href="#" 
+                    className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
+                    aria-label={getTranslation(currentLocale, 'footer.social.linkedin')}
+                  >
+                    <SocialIcons.Linkedin 
+                      size="sm"
+                      aria-label={getTranslation(currentLocale, 'footer.social.linkedin')}
+                    />
+                  </a>
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
+                    aria-label={getTranslation(currentLocale, 'footer.social.github')}
+                  >
+                    <SocialIcons.Github 
+                      size="sm"
+                      aria-label={getTranslation(currentLocale, 'footer.social.github')}
+                    />
+                  </a>
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
+                    aria-label={getTranslation(currentLocale, 'footer.social.twitter')}
+                  >
+                    <SocialIcons.Twitter 
+                      size="sm"
+                      aria-label={getTranslation(currentLocale, 'footer.social.twitter')}
+                    />
+                  </a>
               </div>
             </div>
           </div>
@@ -187,7 +193,7 @@ const Footer = () => {
         <div className="py-6 border-t border-border-subtle">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-text-muted text-sm">
-              © {currentYear} Dozo.Tech. Todos los derechos reservados.
+              {getTranslation(currentLocale, 'footer.copyright')}
             </p>
             <p className="text-text-muted text-sm font-mono">
               Hecho con sistemas que respiran

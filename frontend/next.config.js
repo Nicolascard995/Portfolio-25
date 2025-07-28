@@ -38,17 +38,27 @@ const nextConfig = {
     ]
   },
   
-  // Redirects para SEO
+  // Optimización para i18n
+  experimental: {
+    optimizePackageImports: ['next-intl']
+  },
+  
+  // Redirects optimizados para i18n
   async redirects() {
     return [
       {
+        source: '/',
+        destination: '/es',
+        permanent: false,
+      },
+      {
         source: '/portfolio',
-        destination: '/proyectos',
+        destination: '/es/proyectos',
         permanent: true,
       },
       {
         source: '/contact',
-        destination: '/contacto',
+        destination: '/es/contacto',
         permanent: true,
       },
     ]

@@ -1,17 +1,23 @@
 'use client'
 
-import React, { useState } from 'react'
-import { LogoIcons, NavigationIcons } from './IconSystem'
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
+import { LogoIcons, NavigationIcons } from './IconSystem';
+import LanguageSelector from './LanguageSelector';
+import { getTranslation } from '@/config/translations';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const params = useParams();
+  const currentLocale = params.locale as string;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { name: 'Inicio', href: '#inicio' },
-    { name: 'Cómo trabajo', href: '#como-trabajo' },
-    { name: 'Soluciones', href: '#soluciones' },
-    { name: 'Contacto', href: '#contacto' }
-  ]
+    { name: getTranslation(currentLocale, 'navigation.home'), href: `/${currentLocale}#inicio` },
+    { name: getTranslation(currentLocale, 'navigation.approach'), href: `/${currentLocale}#como-trabajo` },
+    { name: getTranslation(currentLocale, 'navigation.solutions'), href: `/${currentLocale}#soluciones` },
+    { name: getTranslation(currentLocale, 'navigation.contact'), href: `/${currentLocale}#contacto` }
+  ];
 
   return (
     <header className="fixed top-0 w-full glass-strong border-b border-border-subtle z-50">
@@ -51,8 +57,9 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:flex items-center">
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <LanguageSelector />
             <button className="btn-primary text-sm px-6 py-2">
               Empezar ahora
             </button>
@@ -94,17 +101,15 @@ const Header = () => {
                   {item.name}
                 </a>
               ))}
-              <div className="px-4 pt-2">
-                <button className="btn-primary w-full text-sm">
-                  Empezar ahora
-                </button>
+                  <div className="px-4 py-2">
+                    <LanguageSelector />
+                  </div>
+                </nav>
               </div>
-            </nav>
+            )}
           </div>
-        )}
-      </div>
-    </header>
-  )
-}
+        </header>
+      );
+    };
 
-export default Header 
+    export default Header; 
