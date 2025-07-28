@@ -1,0 +1,105 @@
+# Ignorar el archivo de variables de entorno
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Google Cloud credentials
+*.json
+google-credentials.json
+/secrets/
+secrets/
+
+# Ignorar archivos de configuración de entorno local
+.env.*
+
+# __pycache__ y archivos temporales de Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+
+# Archivos de logs
+*.log
+logs/
+
+# Archivos de bases de datos locales
+*.sqlite3
+*.db
+*.sqlite
+
+# Archivos de migraciones temporales
+*.bak
+
+# Archivos de configuración de IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos de dependencias
+*.egg-info/
+dist/
+build/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Next.js
+.next/
+out/
+build/
+
+# Archivos de Docker
+*.pid
+Dockerfile.local
+
+# Archivos de test y cobertura
+htmlcov/
+.coverage
+.tox/
+.pytest_cache/
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+
+# Archivos del sistema
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.temp
+*.cache
+
+# Archivos de backup
+*.backup
+*.old
+*.orig
+
+# Archivos de configuración local
+config.local.*
+settings.local.*
