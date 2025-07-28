@@ -2,34 +2,14 @@
 
 import React from 'react'
 import { FeatureIcons, NavigationIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const PortfolioSection = () => {
-  const projects = [
-    {
-      icon: 'Target',
-      title: 'Sistema de Inventario Inteligente',
-      description: 'Reducimos roturas de stock y creamos alertas predictivas.',
-      sector: 'Gastronomía',
-      stack: ['Python', 'FastAPI', 'Google Sheets'],
-      color: 'from-accent-mint to-accent-blue'
-    },
-    {
-      icon: 'MessageCircle',
-      title: 'Chatbot para atención 24/7',
-      description: 'Menos tickets. Mejor experiencia. Automatización con sentido común.',
-      sector: 'Retail',
-      stack: ['Claude', 'WhatsApp API', 'MongoDB'],
-      color: 'from-accent-blue to-accent-mint'
-    },
-    {
-      icon: 'BarChart3',
-      title: 'Dashboard de Operaciones',
-      description: 'Visualización en tiempo real con alertas automáticas.',
-      sector: 'Servicios',
-      stack: ['React', 'Pandas', 'Grafana'],
-      color: 'from-accent-mint to-accent-blue'
-    }
-  ]
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
+  const projects = getTranslation(currentLocale, 'portfolio.projects') as any[];
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -52,11 +32,10 @@ const PortfolioSection = () => {
           {/* Header */}
           <div className="text-center mb-16 space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              <span className="text-gradient">Casos Reales</span>
+              <span className="text-gradient">{getTranslation(currentLocale, 'portfolio.title')}</span>
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
-              Historias reales de automatización y eficiencia sin promesas exageradas. 
-              Sistemas que funcionaron desde el primer día y siguen mejorando.
+              {getTranslation(currentLocale, 'portfolio.description')}
             </p>
           </div>
 
@@ -67,7 +46,7 @@ const PortfolioSection = () => {
               return (
                 <div key={index} className="card-glow group">
                   <div className="flex items-start space-x-4 mb-6">
-                    <div className={`w-12 h-12 bg-gradient-to-r ${project.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                    <div className={`w-12 h-12 bg-gradient-to-r ${index % 2 === 0 ? 'from-accent-mint to-accent-blue' : 'from-accent-blue to-accent-mint'} rounded-xl flex items-center justify-center flex-shrink-0`}>
                       <IconComponent 
                         size="md" 
                         className="text-dark-absolute"
@@ -90,9 +69,9 @@ const PortfolioSection = () => {
                   
                   {/* Stack */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-text-muted">Stack:</div>
+                    <div className="text-sm font-medium text-text-muted">{getTranslation(currentLocale, 'portfolio.stack_label')}</div>
                     <div className="flex flex-wrap gap-2">
-                      {project.stack.map((tech, techIndex) => (
+                      {project.stack.map((tech: string, techIndex: number) => (
                         <span
                           key={techIndex}
                           className="px-3 py-1 bg-dark-absolute border border-border-subtle rounded-lg text-xs text-text-secondary"
@@ -108,9 +87,9 @@ const PortfolioSection = () => {
           </div>
 
           {/* CTA */}
-          <div className="text-center">
-            <button className="btn-primary btn-icon-right group">
-              <span>Ver detalles del portfolio</span>
+          <div className="flex justify-center">
+            <button className="btn-ghost btn-icon-right group">
+              <span>{getTranslation(currentLocale, 'portfolio.cta')}</span>
               <NavigationIcons.ArrowRight 
                 size="sm" 
                 className="transition-transform group-hover:translate-x-1"

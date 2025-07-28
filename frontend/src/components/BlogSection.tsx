@@ -2,31 +2,15 @@
 
 import React, { useState } from 'react'
 import { ContentIcons, NavigationIcons, ActionIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const BlogSection = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
   const [email, setEmail] = useState('')
 
-  const blogPosts = [
-    {
-      title: 'Qué procesos automatizar primero si sos una agencia chica',
-      excerpt: 'Checklist claro para evitar automatizar lo que no hace falta.',
-      category: 'Servicios',
-      readTime: '6 min',
-      featured: true
-    },
-    {
-      title: 'ChatGPT vs Claude vs Gemini',
-      excerpt: 'Cuál elegir según tu contexto (y no solo lo que está de moda).',
-      category: 'Tecnología',
-      readTime: '8 min'
-    },
-    {
-      title: '3 automatizaciones reales que cambiaron operaciones',
-      excerpt: 'Historias reales, sin ROI inflado ni promesas vacías.',
-      category: 'Casos Reales',
-      readTime: '10 min'
-    }
-  ]
+  const blogPosts = getTranslation(currentLocale, 'blog.posts') as any[];
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -43,11 +27,10 @@ const BlogSection = () => {
           {/* Header */}
           <div className="text-center mb-16 space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              <span className="text-gradient">Aprendizajes</span> y Automatización
+              <span className="text-gradient">{getTranslation(currentLocale, 'blog.title')}</span>
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
-              Ideas accionables, sin promesas vacías. Historias reales de automatización, 
-              eficiencia y decisiones técnicas que sí funcionaron.
+              {getTranslation(currentLocale, 'blog.description')}
             </p>
           </div>
 
@@ -58,7 +41,7 @@ const BlogSection = () => {
                 {post.featured && (
                   <div className="flex items-center space-x-2 mb-4">
                     <div className="w-2 h-2 bg-accent-mint rounded-full animate-pulse"></div>
-                    <span className="text-xs font-mono text-accent-mint">DESTACADO</span>
+                    <span className="text-xs font-mono text-accent-mint">{getTranslation(currentLocale, 'blog.featured')}</span>
                   </div>
                 )}
                 
@@ -91,14 +74,14 @@ const BlogSection = () => {
                         className="mr-2"
                         aria-label="Fecha"
                       />
-                      <span>Próximamente</span>
+                      <span>{getTranslation(currentLocale, 'blog.coming_soon')}</span>
                     </div>
                     
                     <button className="flex items-center text-accent-mint font-medium hover:text-accent-mint-hover transition-colors group">
-                      <span>Leer</span>
+                      <span>{getTranslation(currentLocale, 'blog.read_button')}</span>
                       <NavigationIcons.ArrowRight 
                         size="xs" 
-                        className="ml-2 group-hover:translate-x-1 transition-transform"
+                        className="ml-1 transition-transform group-hover:translate-x-1"
                         aria-label="Leer artículo"
                       />
                     </button>
@@ -108,40 +91,31 @@ const BlogSection = () => {
             ))}
           </div>
 
-          {/* Newsletter CTA */}
-          <div className="card-glow max-w-2xl mx-auto text-center">
-            <div className="space-y-6">
-              <h3 className="text-2xl md:text-3xl font-bold text-text-primary">
-                ¿Querés más <span className="text-gradient">aprendizajes accionables</span>?
-              </h3>
-              
-              <p className="text-text-secondary leading-relaxed">
-                Ideas prácticas de automatización, casos reales y decisiones técnicas 
-                que funcionaron en la vida real.
+          {/* Newsletter Section */}
+          <div className="text-center">
+            <div className="max-w-md mx-auto space-y-4">
+              <p className="text-text-secondary">
+                Recibí insights semanales sobre automatización y eficiencia.
               </p>
               
-              <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="tu@email.com"
+                  placeholder={getTranslation(currentLocale, 'blog.newsletter.placeholder')}
                   className="flex-1 input-field"
                   required
                 />
                 <button type="submit" className="btn-primary group">
-                  <span className="mr-2">Suscribirme al boletín</span>
+                  <span>{getTranslation(currentLocale, 'blog.newsletter.button')}</span>
                   <ActionIcons.Send 
                     size="xs" 
-                    className="transition-transform group-hover:translate-x-1"
+                    className="ml-2 transition-transform group-hover:translate-x-1"
                     aria-label="Suscribirse"
                   />
                 </button>
               </form>
-              
-              <p className="text-text-muted text-sm">
-                Sin spam. Ideas útiles cuando tengo algo valioso que compartir.
-              </p>
             </div>
           </div>
 

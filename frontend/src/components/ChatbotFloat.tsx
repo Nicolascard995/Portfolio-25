@@ -2,14 +2,19 @@
 
 import React, { useState } from 'react'
 import { ActionIcons, NavigationIcons, FeatureIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const ChatbotFloat = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+  
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([
     { 
       id: 1, 
-      text: 'Hola, soy tu asistente de Dozo.Tech 👋\n\n¿En qué puedo ayudarte hoy?', 
+      text: getTranslation(currentLocale, 'chatbot.initial_message'), 
       isBot: true 
     }
   ])
@@ -24,7 +29,7 @@ const ChatbotFloat = () => {
     setTimeout(() => {
       const botResponse = {
         id: Date.now() + 1,
-        text: '¡Gracias por escribirme! 😊\n\nTe responderé muy pronto. Para consultas urgentes, puedes escribirme a nicolas@dozo.tech',
+        text: getTranslation(currentLocale, 'chatbot.response'),
         isBot: true
       }
       setMessages(prev => [...prev, botResponse])
@@ -67,8 +72,8 @@ const ChatbotFloat = () => {
                 <span className="text-dark-absolute text-sm font-bold">D</span>
               </div>
               <div>
-                <div className="text-sm font-medium text-text-primary">Asistente Dozo.Tech</div>
-                <div className="text-xs text-text-muted">En línea</div>
+                <div className="text-sm font-medium text-text-primary">{getTranslation(currentLocale, 'chatbot.title')}</div>
+                <div className="text-xs text-text-muted">{getTranslation(currentLocale, 'chatbot.status')}</div>
               </div>
             </div>
             <button
@@ -111,13 +116,14 @@ const ChatbotFloat = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Escribí tu mensaje..."
-                className="flex-1 px-3 py-2 bg-dark-card border border-border-subtle rounded-lg text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent-mint text-sm"
+                placeholder={getTranslation(currentLocale, 'chatbot.placeholder')}
+                className="flex-1 bg-dark-surface border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:outline-none focus:border-accent-mint"
+                aria-label="Enviar mensaje"
               />
               <button
                 onClick={sendMessage}
-                className="btn-primary btn-icon-only px-3 py-2 text-sm"
-                aria-label="Enviar mensaje"
+                className="w-8 h-8 bg-accent-mint rounded-lg flex items-center justify-center text-dark-absolute hover:bg-accent-mint-hover transition-colors"
+                aria-label="Enviar"
               >
                 <ActionIcons.Send 
                   size="xs"

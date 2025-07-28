@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react'
 import { ActionIcons, NavigationIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 // Sistema de toast simple inline actualizado
 const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -26,6 +28,9 @@ const showToast = (message: string, type: 'success' | 'error' = 'success') => {
 };
 
 const LeadCaptureFloat = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+  
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
@@ -44,7 +49,7 @@ const LeadCaptureFloat = () => {
     e.preventDefault()
     
     if (!formData.nombre || !formData.email) {
-      showToast('Por favor completá los campos requeridos', 'error')
+      showToast(getTranslation(currentLocale, 'toast.required_fields'), 'error')
       return
     }
 
@@ -54,11 +59,11 @@ const LeadCaptureFloat = () => {
       // Simular envío - aquí iría la llamada real a la API
       await new Promise(resolve => setTimeout(resolve, 1500))
       
-      showToast('¡Listo! Te contacto en 24hs máximo.', 'success')
+      showToast(getTranslation(currentLocale, 'toast.success'), 'success')
       setFormData({ nombre: '', email: '', empresa: '', mensaje: '' })
       setIsOpen(false)
     } catch (error) {
-      showToast('Error al enviar. Intentá de nuevo.', 'error')
+      showToast(getTranslation(currentLocale, 'toast.error'), 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -81,8 +86,8 @@ const LeadCaptureFloat = () => {
                 aria-label="Calendario"
               />
               <div className="hidden sm:block">
-                <div className="text-sm font-medium text-text-primary">Empezar ahora</div>
-                <div className="text-xs text-text-muted font-mono">Gratuito • 30 min</div>
+                <div className="text-sm font-medium text-text-primary">{getTranslation(currentLocale, 'lead_capture.float_button')}</div>
+                <div className="text-xs text-text-muted font-mono">{getTranslation(currentLocale, 'lead_capture.float_subtitle')}</div>
               </div>
             </div>
           </button>
@@ -103,8 +108,8 @@ const LeadCaptureFloat = () => {
                 />
               </div>
               <div>
-                <div className="text-lg font-semibold text-text-primary">Empezar ahora</div>
-                <div className="text-sm text-text-muted">Conversación gratuita de 30 min</div>
+                <h3 className="text-lg font-bold text-text-primary">{getTranslation(currentLocale, 'lead_capture.title')}</h3>
+                <p className="text-sm text-text-muted">Consulta gratuita de 30 minutos</p>
               </div>
             </div>
             <button
@@ -121,65 +126,64 @@ const LeadCaptureFloat = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div className="space-y-3">
+            <div>
               <input
                 type="text"
                 name="nombre"
-                placeholder="Nombre *"
+                placeholder={getTranslation(currentLocale, 'lead_capture.name_placeholder')}
                 value={formData.nombre}
                 onChange={handleInputChange}
-                className="input-field"
+                className="w-full input-field"
                 required
               />
+            </div>
+            
+            <div>
               <input
                 type="email"
                 name="email"
-                placeholder="Email *"
+                placeholder={getTranslation(currentLocale, 'lead_capture.email_placeholder')}
                 value={formData.email}
                 onChange={handleInputChange}
-                className="input-field"
+                className="w-full input-field"
                 required
               />
+            </div>
+            
+            <div>
               <input
                 type="text"
                 name="empresa"
-                placeholder="Empresa (opcional)"
+                placeholder={getTranslation(currentLocale, 'lead_capture.company_placeholder')}
                 value={formData.empresa}
                 onChange={handleInputChange}
-                className="input-field"
+                className="w-full input-field"
               />
+            </div>
+            
+            <div>
               <textarea
                 name="mensaje"
-                placeholder="¿En qué puedo ayudarte? (opcional)"
+                placeholder={getTranslation(currentLocale, 'lead_capture.message_placeholder')}
                 value={formData.mensaje}
                 onChange={handleInputChange}
                 rows={3}
-                className="input-field resize-none"
+                className="w-full input-field resize-none"
               />
             </div>
-
+            
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary btn-icon-right w-full group disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-primary btn-icon-right group"
             >
-              {isSubmitting ? (
-                <span>Enviando...</span>
-              ) : (
-                <>
-                  <span>Agendar</span>
-                  <ActionIcons.Send 
-                    size="xs" 
-                    className="transition-transform group-hover:translate-x-1"
-                    aria-label="Enviar"
-                  />
-                </>
-              )}
+              <span>{isSubmitting ? 'Enviando...' : getTranslation(currentLocale, 'lead_capture.submit_button')}</span>
+              <ActionIcons.Send 
+                size="xs" 
+                className="transition-transform group-hover:translate-x-1"
+                aria-label="Enviar"
+              />
             </button>
-            
-            <p className="text-xs text-text-muted text-center">
-              Sin compromiso. Si no te aporto valor, no seguimos.
-            </p>
           </form>
         </div>
       )}

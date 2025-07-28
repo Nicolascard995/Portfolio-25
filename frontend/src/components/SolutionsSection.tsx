@@ -2,27 +2,32 @@
 
 import React from 'react'
 import { FeatureIcons, NavigationIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const SolutionsSection = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
   const solutions = [
     {
       icon: 'Brain',
-      title: 'Análisis accionable',
-      description: 'Tus datos no son para decorar dashboards. Te dicen qué hacer, cuándo y por qué.',
+      title: getTranslation(currentLocale, 'solutions.analytics.title'),
+      description: getTranslation(currentLocale, 'solutions.analytics.description'),
       technologies: ['Pandas', 'SQL', 'Grafana', 'Notion'],
       color: 'from-accent-mint to-accent-blue'
     },
     {
       icon: 'Bot',
-      title: 'Asistentes inteligentes',
-      description: 'IA que responde, entiende y escala sin necesidad de supervisión constante.',
+      title: getTranslation(currentLocale, 'solutions.ai.title'),
+      description: getTranslation(currentLocale, 'solutions.ai.description'),
       technologies: ['Claude', 'GPT', 'WhatsApp API', 'n8n'],
       color: 'from-accent-blue to-accent-mint'
     },
     {
       icon: 'Link',
-      title: 'Integraciones sin fricción',
-      description: 'Todo se conecta: WhatsApp, Notion, Sheets, APIs. Nada queda suelto.',
+      title: getTranslation(currentLocale, 'solutions.integration.title'),
+      description: getTranslation(currentLocale, 'solutions.integration.description'),
       technologies: ['Zapier', 'REST APIs', 'Google Sheets'],
       color: 'from-accent-mint to-accent-blue'
     }
@@ -49,11 +54,10 @@ const SolutionsSection = () => {
           {/* Header */}
           <div className="space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              Soluciones Inteligentes <span className="text-gradient">que Respiran</span>
+              {getTranslation(currentLocale, 'solutions.title')} <span className="text-gradient">que Respiran</span>
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
-              No implemento IA por moda. Diseño herramientas que resuelven tareas específicas con impacto real. 
-              Cada solución está pensada para escalar sin sumar complejidad.
+              {getTranslation(currentLocale, 'solutions.description')}
             </p>
           </div>
 
@@ -81,7 +85,7 @@ const SolutionsSection = () => {
                   
                   {/* Technologies */}
                   <div className="space-y-3">
-                    <div className="text-sm font-medium text-text-muted">Tecnologías:</div>
+                    <div className="text-sm font-medium text-text-muted">{getTranslation(currentLocale, 'solutions.tech_label')}</div>
                     <div className="flex flex-wrap gap-2">
                       {solution.technologies.map((tech, techIndex) => (
                         <span
@@ -101,7 +105,7 @@ const SolutionsSection = () => {
           {/* CTA */}
           <div className="flex justify-center">
             <button className="btn-ghost btn-icon-right group">
-              <span>Ver casos reales</span>
+              <span>{getTranslation(currentLocale, 'solutions.cta')}</span>
               <NavigationIcons.ArrowRight 
                 size="sm" 
                 className="transition-transform group-hover:translate-x-1"

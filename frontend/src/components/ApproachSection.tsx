@@ -2,8 +2,13 @@
 
 import React from 'react'
 import { FeatureIcons, NavigationIcons } from './IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const ApproachSection = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
   return (
     <section id="como-trabajo" className="section-spacing bg-dark-absolute">
       <div className="container-custom">
@@ -17,11 +22,11 @@ const ApproachSection = () => {
                 className="text-accent-mint"
                 aria-label="Chef hat icon"
               />
-              <span className="text-sm font-mono text-text-secondary">CÓMO TRABAJO</span>
+              <span className="text-sm font-mono text-text-secondary">{getTranslation(currentLocale, 'approach.badge')}</span>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              <span className="text-gradient">Mise en place</span> digital
+              <span className="text-gradient">{getTranslation(currentLocale, 'approach.title')}</span>
             </h2>
           </div>
 
@@ -37,22 +42,20 @@ const ApproachSection = () => {
               </div>
               <div className="space-y-4">
                 <p className="text-lg md:text-xl text-text-primary leading-relaxed">
-                  Como en la cocina: antes de ejecutar, ordenamos.
+                  {getTranslation(currentLocale, 'approach.main_text')}
                 </p>
                 <p className="text-base md:text-lg text-text-secondary leading-relaxed">
-                  Analizo tus sistemas, identifico los ingredientes (datos) 
-                  y diseño un flujo limpio, reproducible y escalable.
+                  {getTranslation(currentLocale, 'approach.description')}
                 </p>
               </div>
             </div>
             
             <div className="border-t border-border-subtle pt-6 space-y-4">
               <p className="text-lg md:text-xl text-text-primary font-medium">
-                Esto no es solo automatización.
+                {getTranslation(currentLocale, 'approach.subtitle')}
               </p>
               <p className="text-base md:text-lg text-text-secondary leading-relaxed">
-                Es inteligencia operacional: saber dónde intervenir 
-                para crecer sin sumar complejidad.
+                {getTranslation(currentLocale, 'approach.subtitle_description')}
               </p>
             </div>
           </div>
@@ -60,7 +63,7 @@ const ApproachSection = () => {
           {/* CTA */}
           <div className="flex justify-center">
             <button className="btn-ghost btn-icon-right group">
-              <span>Conocé mis soluciones</span>
+              <span>{getTranslation(currentLocale, 'approach.cta')}</span>
               <NavigationIcons.ArrowRight 
                 size="sm" 
                 className="transition-transform group-hover:translate-x-1"
