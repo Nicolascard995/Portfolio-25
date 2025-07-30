@@ -23,11 +23,34 @@ const HeroSection = () => {
 
   return (
     <section id="inicio" className="min-h-screen relative overflow-hidden flex items-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Video - Desktop */}
+      <div className="absolute inset-0 z-0 hidden md:block">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center"
+          poster="/img/hero section 2025.png"
+        >
+          <source src="/img/hero-desktop.mp4" type="video/mp4" />
+          {/* Fallback image if video doesn't load */}
+          <Image
+            src="/img/hero section 2025.png"
+            alt="Dozo.Tech Hero Background Desktop"
+            fill
+            className="object-cover object-center"
+            priority
+            quality={90}
+          />
+        </video>
+      </div>
+      
+      {/* Background Image - Mobile */}
+      <div className="absolute inset-0 z-0 md:hidden">
         <Image
-          src="/img/hero.jpg"
-          alt="Dozo.Tech Hero Background"
+          src="/img/hero4mobile.png"
+          alt="Dozo.Tech Hero Background Mobile"
           fill
           className="object-cover object-center"
           priority

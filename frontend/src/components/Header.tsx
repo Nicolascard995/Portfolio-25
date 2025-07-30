@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { LogoIcons, NavigationIcons } from './IconSystem';
+import { NavigationIcons } from './IconSystem';
 import LanguageSelector from './LanguageSelector';
 import { getTranslation } from '@/config/translations';
+import DozoTechLogo from './DozoTechLogo';
 
 const Header = () => {
   const params = useParams();
@@ -26,19 +27,14 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <div className="relative group">
-              <LogoIcons.Brain 
+              <DozoTechLogo 
                 size="lg" 
-                className="text-accent-mint transition-all duration-300 group-hover:text-accent-mint-hover"
-                aria-label="Icono cerebro Dozo.Tech"
-              />
-              <LogoIcons.Zap 
-                size="xs" 
-                className="text-accent-blue absolute -top-1 -right-1 animate-pulse"
-                aria-label="Icono energía"
+                className="transition-all duration-300 group-hover:opacity-80"
+                aria-label="Logo Dozo"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-gradient font-dozotech">Dozo.Tech</span>
+              <span className="text-xl font-bold text-gradient font-dozotech">DOZO</span>
               <span className="text-xs text-text-muted leading-none font-mono">Sistemas que Respiran</span>
             </div>
           </div>
