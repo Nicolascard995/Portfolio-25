@@ -9,7 +9,7 @@ services:
     name: dozotech-backend
     env: python
     buildCommand: cd backend && pip install -r requirements.txt
-    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -23,10 +23,6 @@ services:
         value: "https://dozotech-frontend.onrender.com,https://dozo.tech,https://www.dozo.tech"
       - key: ENVIRONMENT
         value: production
-      - key: LOG_LEVEL
-        value: INFO
-    healthCheckPath: /health
-    autoDeploy: true
 
   - type: web
     name: dozotech-frontend
@@ -41,6 +37,4 @@ services:
       - key: NEXT_PUBLIC_API_URL
         value: "https://dozotech-backend.onrender.com"
       - key: NODE_ENV
-        value: production
-      - key: NEXT_TELEMETRY_DISABLED
-        value: "1" 
+        value: production 
