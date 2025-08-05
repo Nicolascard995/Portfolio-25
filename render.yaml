@@ -1,12 +1,10 @@
 services:
-  # Base de datos PostgreSQL
   - type: pserv
     name: dozotech-db
     env: postgresql
     databaseName: dozotech
     user: dozotech_user
 
-  # Backend FastAPI
   - type: web
     name: dozotech-backend
     env: python
@@ -30,12 +28,11 @@ services:
     healthCheckPath: /health
     autoDeploy: true
 
-  # Frontend Next.js
   - type: web
     name: dozotech-frontend
     env: static
     buildCommand: cd frontend && npm ci && npm run build
-    staticPublishPath: ./frontend/out
+    staticPublishPath: frontend/out
     envVars:
       - key: NEXT_PUBLIC_BACKEND_URL
         value: "https://dozotech-backend.onrender.com"
@@ -46,11 +43,4 @@ services:
       - key: NODE_ENV
         value: production
       - key: NEXT_TELEMETRY_DISABLED
-        value: "1"
-    headers:
-      - path: "/*"
-        name: Cache-Control
-        value: "public, max-age=31536000, immutable"
-      - path: "/_next/static/*"
-        name: Cache-Control
-        value: "public, max-age=31536000, immutable" 
+        value: "1" 
