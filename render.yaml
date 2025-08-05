@@ -1,7 +1,6 @@
 services:
   - type: pserv
     name: dozotech-db
-    plan: free
     env: postgresql
 
   - type: web
