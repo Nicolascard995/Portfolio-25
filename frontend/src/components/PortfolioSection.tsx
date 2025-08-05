@@ -19,6 +19,8 @@ const PortfolioSection = () => {
         return FeatureIcons.MessageCircle
       case 'BarChart3':
         return FeatureIcons.BarChart3
+      case 'Brain':
+        return FeatureIcons.Brain
       default:
         return FeatureIcons.Target
     }
@@ -40,7 +42,7 @@ const PortfolioSection = () => {
           </div>
 
           {/* Projects Grid */}
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid lg:grid-cols-2 gap-8 mb-16">
             {projects.map((project, index) => {
               const IconComponent = getIcon(project.icon)
               return (
@@ -63,12 +65,16 @@ const PortfolioSection = () => {
                     </div>
                   </div>
                   
-                  <p className="text-text-secondary leading-relaxed mb-6">
+                  <p className="text-text-secondary leading-relaxed mb-4">
                     {project.description}
                   </p>
                   
+                  <div className="text-sm font-semibold text-accent-mint mb-6">
+                    {project.result}
+                  </div>
+                  
                   {/* Stack */}
-                  <div className="space-y-3">
+                  <div className="space-y-3 mb-6">
                     <div className="text-sm font-medium text-text-muted">{getTranslation(currentLocale, 'portfolio.stack_label')}</div>
                     <div className="flex flex-wrap gap-2">
                       {project.stack.map((tech: string, techIndex: number) => (
@@ -81,21 +87,49 @@ const PortfolioSection = () => {
                       ))}
                     </div>
                   </div>
+
+                  {/* Project CTA Button */}
+                  <div className="flex justify-start">
+                    {project.title.includes('Restaurant Revenue') ? (
+                      <a 
+                        href="https://restaurant-revenue-prediction-tjk8.onrender.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary btn-icon-right group"
+                      >
+                        <span>{getTranslation(currentLocale, 'portfolio.try_demo')}</span>
+                        <NavigationIcons.ArrowRight 
+                          size="sm" 
+                          className="transition-transform group-hover:translate-x-1"
+                          aria-label={`${getTranslation(currentLocale, 'portfolio.try_demo')} de ${project.title}`}
+                        />
+                      </a>
+                    ) : (
+                      <button 
+                        className="btn-primary btn-icon-right group"
+                        onClick={() => {
+                          // Abrir el chatbot con contexto específico del proyecto
+                          const chatbotEvent = new CustomEvent('openChatbot', {
+                            detail: {
+                              project: project.title,
+                              context: `Interesado en: ${project.title} - ${project.sector}`
+                            }
+                          });
+                          window.dispatchEvent(chatbotEvent);
+                        }}
+                      >
+                        <span>{getTranslation(currentLocale, 'portfolio.try_demo')}</span>
+                        <NavigationIcons.ArrowRight 
+                          size="sm" 
+                          className="transition-transform group-hover:translate-x-1"
+                          aria-label={`${getTranslation(currentLocale, 'portfolio.try_demo')} de ${project.title}`}
+                        />
+                      </button>
+                    )}
+                  </div>
                 </div>
               )
             })}
-          </div>
-
-          {/* CTA */}
-          <div className="flex justify-center">
-            <button className="btn-ghost btn-icon-right group">
-              <span>{getTranslation(currentLocale, 'portfolio.cta')}</span>
-              <NavigationIcons.ArrowRight 
-                size="sm" 
-                className="transition-transform group-hover:translate-x-1"
-                aria-label="Ver portfolio completo"
-              />
-            </button>
           </div>
 
         </div>

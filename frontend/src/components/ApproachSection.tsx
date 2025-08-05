@@ -62,14 +62,14 @@ const ApproachSection = () => {
 
           {/* CTA */}
           <div className="flex justify-center">
-            <button className="btn-ghost btn-icon-right group">
+            <a href={`/${currentLocale}/blog/future-letter`} className="btn-ghost btn-icon-right group">
               <span>{getTranslation(currentLocale, 'approach.cta')}</span>
               <NavigationIcons.ArrowRight 
                 size="sm" 
                 className="transition-transform group-hover:translate-x-1"
                 aria-label="Ver soluciones"
               />
-            </button>
+            </a>
           </div>
 
         </div>

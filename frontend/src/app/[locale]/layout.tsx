@@ -1,25 +1,26 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
-import { getTranslation } from '@/config/translations'
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
 // Configuración de idiomas soportados
 const supportedLocales = ['es', 'en', 'de']
-const defaultLocale = 'es'
 
 // Función para generar metadatos dinámicos
 export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  const locale = params.locale || defaultLocale
+  const locale = params.locale || 'es'
   
-  const title = getTranslation(locale, 'meta.site_name') + ' | ' + getTranslation(locale, 'meta.site_description')
-  const description = getTranslation(locale, 'meta.site_description')
-  const keywords = getTranslation(locale, 'meta.keywords')
-  const author = getTranslation(locale, 'meta.author')
-  const ogImage = getTranslation(locale, 'meta.og_image')
-  const canonical = getTranslation(locale, 'meta.canonical')
+  // Validar que el locale sea soportado
+  if (!supportedLocales.includes(locale)) {
+    notFound()
+  }
+  
+  // Metadatos básicos por defecto
+  const title = 'Dozo.Tech | Nicolás Cardozo - Arquitecto de Eficiencia con IA'
+  const description = 'Transformo los desafíos operativos de tu negocio en ventajas competitivas.'
+  const canonical = `https://dozo.tech/${locale}`
   
   // Generar URLs alternativas para hreflang
   const alternates = {
@@ -35,17 +36,17 @@ export async function generateMetadata({ params }: { params: { locale: string } 
   return {
     title,
     description,
-    keywords,
-    authors: [{ name: author }],
+    keywords: 'inteligencia artificial, automatización, ciencia de datos, PYMES, eficiencia operativa',
+    authors: [{ name: 'Nicolás Cardozo' }],
     openGraph: {
       title,
       description,
-      type: getTranslation(locale, 'meta.og_type'),
+      type: 'website',
       url: canonical,
-      siteName: getTranslation(locale, 'meta.site_name'),
+      siteName: 'Dozo.Tech',
       images: [
         {
-          url: ogImage,
+          url: '/og-image.jpg',
           width: 1200,
           height: 630,
           alt: title
@@ -55,12 +56,12 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       alternateLocale: supportedLocales.filter(l => l !== locale)
     },
     twitter: {
-      card: getTranslation(locale, 'meta.twitter_card'),
-      site: getTranslation(locale, 'meta.twitter_site'),
-      creator: getTranslation(locale, 'meta.twitter_creator'),
+      card: 'summary_large_image',
+      site: '@dozo_tech',
+      creator: '@dozo_tech',
       title,
       description,
-      images: [ogImage]
+      images: ['/og-image.jpg']
     },
     robots: {
       index: true,
@@ -75,14 +76,14 @@ export async function generateMetadata({ params }: { params: { locale: string } 
     },
     alternates,
     verification: {
-      google: 'your-google-verification-code',
-      yandex: 'your-yandex-verification-code',
-      yahoo: 'your-yahoo-verification-code'
+      // google: 'your-google-verification-code', // Descomenta cuando tengas el código de Google Search Console
+      // yandex: 'your-yandex-verification-code',
+      // yahoo: 'your-yahoo-verification-code'
     }
   }
 }
 
-export default function RootLayout({
+export default function LocaleLayout({
   children,
   params
 }: {
@@ -93,36 +94,12 @@ export default function RootLayout({
 
   // Redirigir si el locale no es soportado
   if (!supportedLocales.includes(locale)) {
-    redirect(`/${defaultLocale}`)
+    notFound()
   }
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <head>
-        {/* Hreflang tags dinámicos */}
-        <link rel="alternate" hrefLang="es" href="https://dozo.tech/es" />
-        <link rel="alternate" hrefLang="en" href="https://dozo.tech/en" />
-        <link rel="alternate" hrefLang="de" href="https://dozo.tech/de" />
-        <link rel="alternate" hrefLang="x-default" href="https://dozo.tech/es" />
-        
-        {/* Meta tags adicionales */}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        
-        {/* Preconnect para performance */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
-      <body className={inter.className}>
-        {children}
-      </body>
-    </html>
+    <div lang={locale} suppressHydrationWarning>
+      {children}
+    </div>
   )
 } 

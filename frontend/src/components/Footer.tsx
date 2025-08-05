@@ -95,22 +95,12 @@ const Footer = () => {
 
           {/* Info Section */}
           <div className="space-y-8">
-            {/* Contact Info */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-primary">Contacto</h3>
-              <div className="space-y-2 text-text-secondary">
-                <p>Email: nicolas@dozo.tech</p>
-                <p>Teléfono: +56 9 1234 5678</p>
-                <p>Ubicación: Santiago, Chile</p>
-              </div>
-            </div>
-
             {/* Social Links */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-text-primary">Seguime</h3>
               <div className="flex space-x-4">
                 <a
-                  href="https://linkedin.com/in/nicocard95"
+                  href="https://www.linkedin.com/in/nicolascardozo95arg/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-dark-surface border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
@@ -119,7 +109,7 @@ const Footer = () => {
                   <SocialIcons.Linkedin size="sm" />
                 </a>
                 <a
-                  href="https://github.com/nicocard95"
+                  href="https://github.com/Nicolascard995"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-dark-surface border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
@@ -128,11 +118,11 @@ const Footer = () => {
                   <SocialIcons.Github size="sm" />
                 </a>
                 <a
-                  href="https://twitter.com/nicocard95"
+                  href="https://x.com/dozo_tech"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-dark-surface border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
-                  aria-label="Twitter"
+                  aria-label="X (Twitter)"
                 >
                   <SocialIcons.Twitter size="sm" />
                 </a>

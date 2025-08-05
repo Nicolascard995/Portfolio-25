@@ -1,68 +1,68 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavigationIcons } from './IconSystem';
-import Image from 'next/image';
 import { getTranslation } from '@/config/translations';
 import { useParams } from 'next/navigation';
 
 const HeroSection = () => {
   const params = useParams();
   const currentLocale = params.locale as string;
-  const [activeRoleIndex, setActiveRoleIndex] = useState(0);
-  
-  // Obtener roles desde las traducciones
-  const roles = getTranslation(currentLocale, 'hero.roles.list') as string[];
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
+  // Función para manejar la carga del video
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
+
+  const handleVideoError = () => {
+    setVideoLoaded(false);
+  };
+
+  // Precargar el video cuando el componente se monta
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveRoleIndex((prevIndex) => (prevIndex + 1) % roles.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [roles.length]);
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, []);
 
   return (
     <section id="inicio" className="min-h-screen relative overflow-hidden flex items-center">
-      {/* Background Video - Desktop */}
-      <div className="absolute inset-0 z-0 hidden md:block">
+      {/* Background Video - Full Screen */}
+      <div className="absolute inset-0 z-0">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
+          preload="metadata"
+          poster="/img/hero-poster.jpg"
           className="w-full h-full object-cover object-center"
-          poster="/img/hero section 2025.png"
+          style={{ 
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+          onLoadedData={handleVideoLoad}
+          onError={handleVideoError}
+          onCanPlay={handleVideoLoad}
+          onLoadStart={handleVideoLoad}
+          onLoadedMetadata={handleVideoLoad}
         >
           <source src="/img/hero-desktop.mp4" type="video/mp4" />
-          {/* Fallback image if video doesn't load */}
-          <Image
-            src="/img/hero section 2025.png"
-            alt="Dozo.Tech Hero Background Desktop"
-            fill
-            className="object-cover object-center"
-            priority
-            quality={90}
-          />
         </video>
-      </div>
-      
-      {/* Background Image - Mobile */}
-      <div className="absolute inset-0 z-0 md:hidden">
-        <Image
-          src="/img/hero4mobile.png"
-          alt="Dozo.Tech Hero Background Mobile"
-          fill
-          className="object-cover object-center"
-          priority
-          quality={90}
+        {/* Fallback background color if video doesn't load */}
+        <div 
+          className={`absolute inset-0 bg-gradient-to-br from-dark-absolute via-dark-absolute/90 to-dark-absolute transition-opacity duration-200 ${videoLoaded ? 'opacity-0' : 'opacity-100'}`}
         />
       </div>
       
       {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-dark-absolute/80 z-0"></div>
+      <div className="absolute inset-0 bg-dark-absolute/70 z-0"></div>
       
       {/* Gradient overlay */}
-      <div className="hero-gradient z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-absolute/30 to-dark-absolute/80 z-0"></div>
       
       {/* Animated background dots */}
       <div className="absolute inset-0 opacity-5 z-0">
@@ -83,41 +83,23 @@ const HeroSection = () => {
           {/* Main Headline */}
           <div className="space-y-8">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-text-primary leading-[1.1] tracking-tight">
-              <span className="block mb-4">{getTranslation(currentLocale, 'hero.title')}</span>
-              <span className="text-gradient block mb-6">{getTranslation(currentLocale, 'hero.subtitle')}</span>
+              <span className="text-gradient block mb-6">{getTranslation(currentLocale, 'hero.title')}</span>
               <span className="block text-2xl md:text-3xl lg:text-4xl font-normal text-text-secondary leading-relaxed">
                 {getTranslation(currentLocale, 'hero.description')}
               </span>
             </h1>
-            
-            {/* Rotating roles section */}
-            <div className="space-y-6 py-8">
-              <div className="text-xl md:text-2xl text-text-secondary">
-                {getTranslation(currentLocale, 'hero.roles.prefix')}
-              </div>
-              
-              <div className="h-16 flex items-center justify-center">
-                <div className="text-2xl md:text-4xl font-semibold tracking-tight text-text-primary transition-all duration-500 ease-in-out">
-                  {roles[activeRoleIndex]}
-                </div>
-              </div>
-              
-              <div className="space-y-2 text-xl md:text-2xl">
-                <div className="font-bold text-white">{getTranslation(currentLocale, 'hero.roles.suffix')}</div>
-              </div>
-            </div>
           </div>
 
           {/* CTA Button */}
           <div className="flex flex-col sm:flex-row gap-6 items-center justify-center">
-            <button className="btn-primary btn-icon-right text-lg px-8 py-4 rounded-full group">
+            <a href={`/${currentLocale}#como-trabajo`} className="btn-primary btn-icon-right text-lg px-8 py-4 rounded-full group">
               <span>{getTranslation(currentLocale, 'hero.cta')}</span>
               <NavigationIcons.ArrowRight 
                 size="sm" 
                 className="transition-transform group-hover:translate-x-1"
                 aria-label="Ir a empezar ahora"
               />
-            </button>
+            </a>
           </div>
         </div>
       </div>

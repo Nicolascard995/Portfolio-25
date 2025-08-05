@@ -1,0 +1,5 @@
+[33m3af1e40[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m feat: Configuración completa para despliegue en Render
+[33m3e1df3c[m feat: actualizar branding y hero section con nuevo logo y video optimizado
+[33mfdaedc3[m fix: corregir ruta de importación de globals.css en layout
+[33mf7bc9c3[m feat: Complete internationalization system - Prompts 1-4
+[33m3b8bb48[m primera etapa de internacionalización

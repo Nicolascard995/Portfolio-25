@@ -1,51 +1,51 @@
 import React from 'react';
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const PyTorchProject = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
   return (
     <div className="space-y-12">
       {/* Header */}
       <div className="text-center space-y-6">
         <h3 className="text-2xl md:text-3xl font-bold text-gradient">
-          🚀 Desarrollo de Soluciones de IA Personalizadas con PyTorch
+          {getTranslation(currentLocale, 'research.pytorch.title')}
         </h3>
         <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-          Creando inteligencia artificial a medida para transformar la educación, automatizar procesos y generar valor en diversos sectores.
+          {getTranslation(currentLocale, 'research.pytorch.description')}
         </p>
       </div>
 
       {/* Visión y Propuesta de Valor (Integración con el estilo existente) */}
       <div className="card-glow">
-        <h4 className="text-xl font-bold text-accent-mint mb-4">¿Por qué IA Personalizada?</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.pytorch.why_custom_ai')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li>Adaptabilidad y precisión: desarrollamos modelos de IA que se ajustan con exactitud a las necesidades específicas de cada dominio, superando las limitaciones de soluciones genéricas.</li>
-          <li>Control total: garantizamos independencia tecnológica, permitiendo un control absoluto sobre los datos, la arquitectura del modelo y las estrategias de despliegue.</li>
-          <li>Privacidad y seguridad: priorizamos la confidencialidad de la información, diseñando sistemas que operan bajo estrictos estándares de privacidad y cumplimiento normativo.</li>
-          <li>Eficiencia de costos y escalabilidad: optimizamos los recursos y creamos soluciones escalables que crecen con tu proyecto, ofreciendo un retorno de inversión claro y predecible.</li>
-          <li>Innovación continua: facilitamos la iteración rápida y la incorporación de nuevas funcionalidades, asegurando que la solución de IA evolucione al ritmo de tus objetivos.</li>
+          {getTranslation(currentLocale, 'research.pytorch.custom_ai_reasons').map((reason: string, index: number) => (
+            <li key={index}>{reason}</li>
+          ))}
         </ul>
       </div>
 
       {/* Capacidades Técnicas Clave */}
       <div className="bg-dark-card border border-border-subtle rounded-2xl p-8">
-        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">Capacidades Técnicas Destacadas</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">{getTranslation(currentLocale, 'research.pytorch.technical_capabilities')}</h4>
         <div className="grid md:grid-cols-2 gap-8 text-text-secondary">
           <div>
-            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">Modelado de IA con PyTorch</h5>
+            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">{getTranslation(currentLocale, 'research.pytorch.ai_modeling.title')}</h5>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Diseño y entrenamiento de redes neuronales convolucionales y recurrentes.</li>
-              <li>Implementación de arquitecturas de modelos personalizadas para PLN (procesamiento de lenguaje natural) y sistemas de recomendación.</li>
-              <li>Estrategias de optimización de modelos: regularización (Dropout), ajuste de parámetros y early stopping para prevenir el sobreajuste.</li>
-              <li>Manejo de datasets complejos y creación de pipelines de datos eficientes.</li>
+              {getTranslation(currentLocale, 'research.pytorch.ai_modeling.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
           <div>
-            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">Desarrollo Full-Stack y Arquitectura</h5>
+            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">{getTranslation(currentLocale, 'research.pytorch.fullstack_development.title')}</h5>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Diseño de APIs RESTful robustas utilizando FastAPI para la interacción backend-frontend.</li>
-              <li>Integración de bases de datos relacionales (PostgreSQL) para persistencia de datos.</li>
-              <li>Implementación de microservicios (por ejemplo, servicio de IA, servicio de evaluación de código) para modularidad y escalabilidad.</li>
-              <li>Desarrollo de interfaces de usuario interactivas con React y TypeScript, incluyendo editores de código y visualizaciones.</li>
-              <li>Uso de Docker para la contenerización y despliegue consistente de aplicaciones.</li>
+              {getTranslation(currentLocale, 'research.pytorch.fullstack_development.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -53,36 +53,47 @@ const PyTorchProject = () => {
 
       {/* Aplicaciones Reales (Manteniendo la esencia) */}
       <div className="card-glow">
-        <h4 className="text-xl font-bold text-accent-mint mb-4">Aplicaciones y Casos de Uso</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.pytorch.applications')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li>Asistentes virtuales inteligentes: creación de chatbots especializados para soporte al cliente, educación y automatización interna.</li>
-          <li>Sistemas de evaluación automatizada: desarrollo de motores que analizan y proporcionan feedback sobre código o respuestas de usuario.</li>
-          <li>Plataformas de aprendizaje adaptativo: implementación de tutores virtuales que personalizan el contenido y el progreso del estudiante.</li>
-          <li>Análisis predictivo y motores de recomendación.</li>
-          <li>Automatización de procesos de negocio y flujos de trabajo.</li>
+          {getTranslation(currentLocale, 'research.pytorch.applications_list').map((application: string, index: number) => (
+            <li key={index}>{application}</li>
+          ))}
         </ul>
+      </div>
+
+      {/* Casos de Uso */}
+      <div className="card-glow">
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.pytorch.use_cases_section')}</h4>
+        <p className="text-lg text-text-secondary mb-6">
+          {getTranslation(currentLocale, 'research.pytorch.use_cases_description')}
+        </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {getTranslation(currentLocale, 'research.pytorch.use_cases_list').map((useCase: string, index: number) => (
+            <div key={index} className="bg-dark-card border border-border-subtle rounded-lg p-4">
+              <p className="text-text-secondary">{useCase}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Métricas Clave y Logros */}
       <div className="bg-dark-card border border-border-subtle rounded-2xl p-8">
-        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">Métricas de Éxito y Logros Clave</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">{getTranslation(currentLocale, 'research.pytorch.success_metrics')}</h4>
         <div className="grid md:grid-cols-2 gap-8 text-text-secondary">
           <div>
-            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">Desempeño del Modelo y Eficiencia</h5>
+            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">{getTranslation(currentLocale, 'research.pytorch.model_performance.title')}</h5>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Precisión del modelo: clasificación superior al 90% en intenciones educativas (o similar, basado en tu implementación).</li>
-              <li>Tiempo de respuesta promedio: optimización para respuestas en menos de 500 ms, garantizando una interacción fluida.</li>
-              <li>Tasa de confianza: manteniendo una tasa de confianza superior al 75% en las predicciones del modelo.</li>
-              <li>Cobertura de intenciones: soporte robusto para 7 intenciones educativas únicas, con un promedio de más de 50 patrones de entrenamiento por intención.</li>
+              {getTranslation(currentLocale, 'research.pytorch.model_performance.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
           <div>
-            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">Impacto en el Usuario y Escalabilidad</h5>
+            <h5 className="font-semibold text-lg mb-2 text-accent-cyan">{getTranslation(currentLocale, 'research.pytorch.user_impact.title')}</h5>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Usuarios activos: diseñado para soportar más de 50 usuarios concurrentes durante la fase beta.</li>
-              <li>Ejercicios completados: capacidad para procesar más de 500 ejercicios interactivos, demostrando la robustez del sistema de evaluación.</li>
-              <li>Disponibilidad del sistema: objetivo de un uptime superior al 99% para asegurar la continuidad del servicio.</li>
-              <li>Cobertura de conceptos: capacidad para enseñar conceptos fundamentales de programación, con potencial de expansión.</li>
+              {getTranslation(currentLocale, 'research.pytorch.user_impact.items').map((item: string, index: number) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -91,11 +102,23 @@ const PyTorchProject = () => {
       {/* Cita final */}
       <div className="text-center mt-8">
         <em className="block text-lg text-text-secondary mb-2">
-          “Transformando desafíos complejos en soluciones de IA inteligentes y con impacto real.”
+          "{getTranslation(currentLocale, 'research.pytorch.final_quote')}"
         </em>
         <p className="text-sm text-text-muted">
-          Explora cómo la IA personalizada puede ser el motor de innovación para tu próximo gran proyecto.
+          {getTranslation(currentLocale, 'research.pytorch.final_description')}
         </p>
+      </div>
+
+      {/* Enlace al repositorio */}
+      <div className="text-center mt-6">
+        <a 
+          href="https://github.com/Nicolascard995/chatbotpytorch" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-accent-mint underline hover:text-accent-cyan transition-colors"
+        >
+          {getTranslation(currentLocale, 'research.pytorch.github_link')}
+        </a>
       </div>
     </div>
   );

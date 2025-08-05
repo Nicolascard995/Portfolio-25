@@ -10,7 +10,7 @@ const BlogSection = () => {
   const currentLocale = params.locale as string;
   const [email, setEmail] = useState('')
 
-  const blogPosts = getTranslation(currentLocale, 'blog.posts') as any[];
+  const blogPosts = (getTranslation(currentLocale, 'blog.posts') as any[]) || [];
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -36,7 +36,7 @@ const BlogSection = () => {
 
           {/* Blog Posts Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {blogPosts.map((post, index) => (
+            {Array.isArray(blogPosts) && blogPosts.length > 0 ? blogPosts.map((post, index) => (
               <article key={index} className={`card-interactive ${post.featured ? 'ring-2 ring-accent-mint/20' : ''}`}>
                 {post.featured && (
                   <div className="flex items-center space-x-2 mb-4">
@@ -48,23 +48,23 @@ const BlogSection = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="px-3 py-1 bg-dark-absolute border border-border-subtle rounded-full text-xs font-medium text-accent-mint">
-                      {post.category}
+                      {post.category || 'General'}
                     </span>
                     <div className="flex items-center space-x-2 text-text-muted text-xs">
                       <ContentIcons.Clock 
                         size="xs"
                         aria-label="Tiempo de lectura"
                       />
-                      <span>{post.readTime}</span>
+                      <span>{post.readTime || '5 min'}</span>
                     </div>
                   </div>
                   
                   <h3 className="text-xl font-bold text-text-primary leading-tight hover:text-gradient transition-colors">
-                    {post.title}
+                    {post.title || 'Post title'}
                   </h3>
                   
                   <p className="text-text-secondary leading-relaxed">
-                    {post.excerpt}
+                    {post.excerpt || 'Post excerpt'}
                   </p>
                   
                   <div className="flex items-center justify-between pt-4 border-t border-border-subtle">
@@ -88,7 +88,11 @@ const BlogSection = () => {
                   </div>
                 </div>
               </article>
-            ))}
+            )) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-text-secondary">No posts available at the moment.</p>
+              </div>
+            )}
           </div>
 
           {/* Newsletter Section */}

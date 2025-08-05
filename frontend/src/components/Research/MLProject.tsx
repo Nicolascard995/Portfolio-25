@@ -2,6 +2,8 @@
 
 import React, { useEffect } from 'react'
 import { FeatureIcons, ContactIcons, SocialIcons } from '../IconSystem'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 declare global {
   interface Window {
@@ -10,6 +12,9 @@ declare global {
 }
 
 const MLProject = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
   useEffect(() => {
     // Cargar Plotly dinámicamente
     const script = document.createElement('script')
@@ -43,7 +48,7 @@ const MLProject = () => {
       textfont: { color: '#FFFFFF' }
     }], {
       title: {
-        text: 'Accuracy por Algoritmo',
+        text: getTranslation(currentLocale, 'research.ml_project.algorithms_comparison'),
         font: { color: '#FFFFFF', size: 16 }
       },
       yaxis: {
@@ -70,7 +75,7 @@ const MLProject = () => {
       textfont: { color: '#FFFFFF' }
     }], {
       title: {
-        text: 'Importancia de Variables (Random Forest)',
+        text: getTranslation(currentLocale, 'research.ml_project.feature_importance'),
         font: { color: '#FFFFFF', size: 16 }
       },
       xaxis: {
@@ -106,7 +111,7 @@ const MLProject = () => {
       }
     ], {
       title: {
-        text: 'Curva ROC',
+        text: getTranslation(currentLocale, 'research.ml_project.roc_curve'),
         font: { color: '#FFFFFF', size: 16 }
       },
       xaxis: {
@@ -141,7 +146,7 @@ const MLProject = () => {
       hoverinfo: 'z'
     }], {
       title: {
-        text: 'Matriz de Confusión',
+        text: getTranslation(currentLocale, 'research.ml_project.confusion_matrix'),
         font: { color: '#FFFFFF', size: 16 }
       },
       xaxis: {
@@ -162,23 +167,17 @@ const MLProject = () => {
     'XGBoost', 'LightGBM', 'TensorFlow'
   ]
 
-  const useCases = [
-    '🏥 Diagnóstico Médico (Cáncer de mama)',
-    '🍷 Clasificación de Vinos',
-    '🚢 Predicción de Supervivencia (Titanic)',
-    '❤️ Detección de Enfermedad Cardíaca',
-    '🏠 Predicción de Precios Inmobiliarios'
-  ]
+  const useCases = getTranslation(currentLocale, 'research.ml_project.use_cases_list')
 
   return (
     <div className="space-y-12">
       {/* Header */}
       <div className="text-center space-y-6">
         <h3 className="text-2xl md:text-3xl font-bold text-gradient">
-          🧠 ML Project Avanzado
+          {getTranslation(currentLocale, 'research.ml_project.title')}
         </h3>
         <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-          Proyecto profesional de Machine Learning con visualización avanzada de datos
+          {getTranslation(currentLocale, 'research.ml_project.description')}
         </p>
       </div>
 
@@ -193,39 +192,36 @@ const MLProject = () => {
             />
           </div>
           <div>
-            <h4 className="text-2xl font-bold text-text-primary mb-4">🌟 Características Principales</h4>
+            <h4 className="text-2xl font-bold text-text-primary mb-4">{getTranslation(currentLocale, 'research.ml_project.main_features')}</h4>
           </div>
         </div>
         
         <div className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
             <div>
-              <h5 className="text-lg font-semibold text-accent-mint mb-2">Algoritmos Implementados</h5>
+              <h5 className="text-lg font-semibold text-accent-mint mb-2">{getTranslation(currentLocale, 'research.ml_project.algorithms.title')}</h5>
               <p className="text-text-secondary">
-                Clasificación (Random Forest, SVM, XGBoost), Regresión (Ridge, Lasso, Elastic Net), 
-                Clustering (K-Means, DBSCAN), Ensemble Methods
+                {getTranslation(currentLocale, 'research.ml_project.algorithms.description')}
               </p>
             </div>
             <div>
-              <h5 className="text-lg font-semibold text-accent-mint mb-2">Datasets Utilizados</h5>
+              <h5 className="text-lg font-semibold text-accent-mint mb-2">{getTranslation(currentLocale, 'research.ml_project.datasets.title')}</h5>
               <p className="text-text-secondary">
-                Iris, Wine, Breast Cancer, Titanic, Heart Disease, California Housing, sintéticos
+                {getTranslation(currentLocale, 'research.ml_project.datasets.description')}
               </p>
             </div>
           </div>
           <div className="space-y-4">
             <div>
-              <h5 className="text-lg font-semibold text-accent-mint mb-2">Técnicas Avanzadas</h5>
+              <h5 className="text-lg font-semibold text-accent-mint mb-2">{getTranslation(currentLocale, 'research.ml_project.techniques.title')}</h5>
               <p className="text-text-secondary">
-                Feature Engineering, Optimización de Hiperparámetros, Validación Cruzada, 
-                Interpretabilidad (SHAP, Importancia de Features)
+                {getTranslation(currentLocale, 'research.ml_project.techniques.description')}
               </p>
             </div>
             <div>
-              <h5 className="text-lg font-semibold text-accent-mint mb-2">Resultados Obtenidos</h5>
+              <h5 className="text-lg font-semibold text-accent-mint mb-2">{getTranslation(currentLocale, 'research.ml_project.results.title')}</h5>
               <p className="text-text-secondary">
-                <span className="text-accent-blue font-bold">Accuracy promedio 96.2%</span>, 
-                reproducibilidad 100%, cobertura de tests 85%
+                <span className="text-accent-blue font-bold">{getTranslation(currentLocale, 'research.ml_project.results.description')}</span>
               </p>
             </div>
           </div>
@@ -233,9 +229,12 @@ const MLProject = () => {
 
         {/* Casos de Uso */}
         <div className="mt-8">
-          <h5 className="text-xl font-semibold text-accent-blue mb-4">🎯 Casos de Uso</h5>
+          <h5 className="text-xl font-semibold text-accent-blue mb-4">{getTranslation(currentLocale, 'research.ml_project.use_cases_section')}</h5>
+          <p className="text-lg text-text-secondary mb-6">
+            {getTranslation(currentLocale, 'research.ml_project.use_cases_description')}
+          </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {useCases.map((useCase, index) => (
+            {useCases.map((useCase: string, index: number) => (
               <div key={index} className="bg-dark-card border border-border-subtle rounded-lg p-4">
                 <p className="text-text-secondary">{useCase}</p>
               </div>
@@ -247,33 +246,33 @@ const MLProject = () => {
       {/* Visualizaciones */}
       <div className="space-y-8">
         <h4 className="text-2xl font-bold text-center text-gradient">
-          📊 Galería de Visualizaciones Interactivas
+          {getTranslation(currentLocale, 'research.ml_project.visualizations')}
         </h4>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="card-glow">
             <div className="text-lg font-semibold text-accent-mint mb-4 text-center">
-              Comparación de Algoritmos
+              {getTranslation(currentLocale, 'research.ml_project.algorithms_comparison')}
             </div>
             <div id="algorithms-bar" className="min-h-[300px]"></div>
           </div>
           
           <div className="card-glow">
             <div className="text-lg font-semibold text-accent-mint mb-4 text-center">
-              Importancia de Variables
+              {getTranslation(currentLocale, 'research.ml_project.feature_importance')}
             </div>
             <div id="feature-importance" className="min-h-[300px]"></div>
           </div>
           
           <div className="card-glow">
             <div className="text-lg font-semibold text-accent-mint mb-4 text-center">
-              Curva ROC
+              {getTranslation(currentLocale, 'research.ml_project.roc_curve')}
             </div>
             <div id="roc-curve" className="min-h-[300px]"></div>
           </div>
           
           <div className="card-glow">
             <div className="text-lg font-semibold text-accent-mint mb-4 text-center">
-              Matriz de Confusión
+              {getTranslation(currentLocale, 'research.ml_project.confusion_matrix')}
             </div>
             <div id="confusion-matrix" className="min-h-[300px]"></div>
           </div>
@@ -283,7 +282,7 @@ const MLProject = () => {
       {/* Stack Tecnológico */}
       <div className="space-y-6">
         <h4 className="text-2xl font-bold text-center text-gradient">
-          🛠️ Stack Tecnológico
+          {getTranslation(currentLocale, 'research.ml_project.tech_stack')}
         </h4>
         <div className="flex flex-wrap justify-center gap-4">
           {techStack.map((tech, index) => (
@@ -297,12 +296,12 @@ const MLProject = () => {
         </div>
       </div>
 
-      {/* Contacto y Enlaces */}
+      {/* Enlaces del Proyecto */}
       <div className="text-center space-y-4">
-        <h5 className="text-lg font-semibold text-gradient">📞 Enlaces del Proyecto</h5>
+        <h5 className="text-lg font-semibold text-gradient">{getTranslation(currentLocale, 'research.ml_project.project_links')}</h5>
         <div className="flex justify-center gap-6">
           <a 
-            href="https://github.com/tu-usuario/ml-project" 
+            href="https://github.com/Nicolascard995/course_ml_MindsDB" 
             target="_blank" 
             rel="noopener noreferrer"
             className="w-12 h-12 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
@@ -314,7 +313,7 @@ const MLProject = () => {
             />
           </a>
           <a 
-            href="https://linkedin.com/in/tu-perfil" 
+            href="https://www.linkedin.com/in/nicolascardozo95arg/" 
             target="_blank" 
             rel="noopener noreferrer"
             className="w-12 h-12 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
@@ -323,16 +322,6 @@ const MLProject = () => {
             <SocialIcons.Linkedin 
               size="md"
               aria-label="LinkedIn"
-            />
-          </a>
-          <a 
-            href="mailto:nicolas@dozo.tech"
-            className="w-12 h-12 bg-dark-card border border-border-subtle rounded-lg flex items-center justify-center text-text-secondary hover:text-accent-mint hover:border-accent-mint transition-all duration-300"
-            aria-label="Email"
-          >
-            <ContactIcons.Mail 
-              size="md"
-              aria-label="Email"
             />
           </a>
         </div>

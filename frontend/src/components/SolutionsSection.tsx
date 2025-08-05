@@ -11,38 +11,41 @@ const SolutionsSection = () => {
 
   const solutions = [
     {
-      icon: 'Brain',
-      title: getTranslation(currentLocale, 'solutions.analytics.title'),
-      description: getTranslation(currentLocale, 'solutions.analytics.description'),
-      technologies: ['Pandas', 'SQL', 'Grafana', 'Notion'],
+      icon: 'Settings',
+      title: getTranslation(currentLocale, 'solutions.operational.title'),
+      description: getTranslation(currentLocale, 'solutions.operational.description'),
+      benefit: getTranslation(currentLocale, 'solutions.operational.benefit'),
+      technologies: ['Python', 'PostgreSQL', 'FastAPI', 'Docker'],
       color: 'from-accent-mint to-accent-blue'
     },
     {
-      icon: 'Bot',
-      title: getTranslation(currentLocale, 'solutions.ai.title'),
-      description: getTranslation(currentLocale, 'solutions.ai.description'),
-      technologies: ['Claude', 'GPT', 'WhatsApp API', 'n8n'],
+      icon: 'BarChart3',
+      title: getTranslation(currentLocale, 'solutions.analytics.title'),
+      description: getTranslation(currentLocale, 'solutions.analytics.description'),
+      benefit: getTranslation(currentLocale, 'solutions.analytics.benefit'),
+      technologies: ['Pandas', 'NumPy', 'Scikit-learn', 'TensorFlow'],
       color: 'from-accent-blue to-accent-mint'
     },
     {
-      icon: 'Link',
-      title: getTranslation(currentLocale, 'solutions.integration.title'),
-      description: getTranslation(currentLocale, 'solutions.integration.description'),
-      technologies: ['Zapier', 'REST APIs', 'Google Sheets'],
+      icon: 'Bot',
+      title: getTranslation(currentLocale, 'solutions.automation.title'),
+      description: getTranslation(currentLocale, 'solutions.automation.description'),
+      benefit: getTranslation(currentLocale, 'solutions.automation.benefit'),
+      technologies: ['LangChain', 'OpenAI API', 'Pinecone', 'n8n'],
       color: 'from-accent-mint to-accent-blue'
     }
   ]
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
-      case 'Brain':
-        return FeatureIcons.Brain
+      case 'Settings':
+        return FeatureIcons.Settings
+      case 'BarChart3':
+        return FeatureIcons.BarChart3
       case 'Bot':
         return FeatureIcons.Bot
-      case 'Link':
-        return FeatureIcons.Link
       default:
-        return FeatureIcons.Brain
+        return FeatureIcons.Settings
     }
   }
 
@@ -54,7 +57,7 @@ const SolutionsSection = () => {
           {/* Header */}
           <div className="space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              {getTranslation(currentLocale, 'solutions.title')} <span className="text-gradient">que Respiran</span>
+              {getTranslation(currentLocale, 'solutions.title')}
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
               {getTranslation(currentLocale, 'solutions.description')}
@@ -79,9 +82,13 @@ const SolutionsSection = () => {
                     {solution.title}
                   </h3>
                   
-                  <p className="text-text-secondary leading-relaxed mb-6">
+                  <p className="text-text-secondary leading-relaxed mb-4">
                     {solution.description}
                   </p>
+                  
+                  <div className="text-sm font-semibold text-accent-mint mb-6">
+                    {solution.benefit}
+                  </div>
                   
                   {/* Technologies */}
                   <div className="space-y-3">
@@ -102,17 +109,7 @@ const SolutionsSection = () => {
             })}
           </div>
 
-          {/* CTA */}
-          <div className="flex justify-center">
-            <button className="btn-ghost btn-icon-right group">
-              <span>{getTranslation(currentLocale, 'solutions.cta')}</span>
-              <NavigationIcons.ArrowRight 
-                size="sm" 
-                className="transition-transform group-hover:translate-x-1"
-                aria-label="Ver casos reales"
-              />
-            </button>
-          </div>
+
 
         </div>
       </div>

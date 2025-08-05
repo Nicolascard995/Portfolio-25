@@ -1,12 +1,17 @@
 import React from 'react';
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const ConvolutionalClassifierProject = () => {
+  const params = useParams();
+  const currentLocale = params.locale as string;
+
   return (
     <div className="space-y-12">
       {/* Header */}
       <div className="text-center space-y-6">
         <h3 className="text-2xl md:text-3xl font-bold text-gradient">
-          Clasificador Convolucional Avanzado
+          {getTranslation(currentLocale, 'research.convolutional_classifier.title')}
         </h3>
         <div className="flex justify-center gap-2 mb-2">
           <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+" />
@@ -14,88 +19,80 @@ const ConvolutionalClassifierProject = () => {
           <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License" />
         </div>
         <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-          Proyecto de clasificación de imágenes de vehículos (coches vs camiones) usando deep learning, transfer learning y arquitectura profesional de software. Ideal para demostrar habilidades de <b>MLOps</b>, <b>ingeniería de datos</b> y <b>despliegue de modelos</b>.
+          {getTranslation(currentLocale, 'research.convolutional_classifier.description')}
         </p>
       </div>
 
       {/* Highlights profesionales */}
       <div className="card-glow">
-        <h4 className="text-xl font-bold text-accent-mint mb-4">Highlights profesionales</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.convolutional_classifier.professional_highlights')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li>Arquitectura modular y escalable (<span className="font-mono">src/</span>, <span className="font-mono">models/</span>, <span className="font-mono">data/</span>, <span className="font-mono">utils/</span>, <span className="font-mono">notebooks/</span>, <span className="font-mono">tests/</span>, <span className="font-mono">docs/</span>)</li>
-          <li>Gestión centralizada de configuración con YAML</li>
-          <li>Comparación de arquitecturas SOTA: <b>ResNet50</b>, <b>EfficientNet</b>, <b>Vision Transformer</b></li>
-          <li>Pipeline de datos robusto: <b>data augmentation</b>, validación cruzada, manejo de desbalanceo</li>
-          <li>Entrenamiento reproducible y scripts CLI (<span className="font-mono">train.py</span>, <span className="font-mono">evaluate.py</span>)</li>
-          <li>Métricas avanzadas: matriz de confusión, precision/recall, F1-score, ROC-AUC</li>
-          <li>Integración de MLOps: versionado de modelos, CI/CD, Docker, MLflow</li>
-          <li>Tracking de experimentos con TensorBoard/Weights & Biases</li>
-          <li>Explicabilidad: Grad-CAM, LIME, visualización de features</li>
-          <li>Despliegue web con <b>FastAPI</b> o <b>Streamlit</b> para predicción en tiempo real</li>
-          <li>Documentación profesional y Makefile para automatización</li>
-          <li>Testing y control de calidad: unit/integration tests, pre-commit hooks</li>
-          <li>Preparado para despliegue en la nube (AWS/GCP/Azure)</li>
+          {getTranslation(currentLocale, 'research.convolutional_classifier.highlights_list').map((highlight: string, index: number) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: highlight }} />
+          ))}
         </ul>
       </div>
 
       {/* Stack Tecnológico */}
       <div className="bg-dark-card border border-border-subtle rounded-2xl p-8">
-        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">Stack Tecnológico</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">{getTranslation(currentLocale, 'research.convolutional_classifier.tech_stack')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li><b>Python 3.8+</b>, <b>TensorFlow 2.13+</b>, <b>scikit-learn</b>, <b>albumentations</b></li>
-          <li>Docker, MLflow, GitHub Actions, Makefile</li>
-          <li>FastAPI / Streamlit para APIs y dashboards</li>
-          <li>TensorBoard, Weights & Biases para tracking</li>
+          {getTranslation(currentLocale, 'research.convolutional_classifier.tech_stack_list').map((tech: string, index: number) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: tech }} />
+          ))}
         </ul>
       </div>
 
 
       {/* ¿Por qué es profesional? */}
       <div className="bg-dark-card border border-border-subtle rounded-2xl p-8">
-        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">¿Por qué es profesional?</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">{getTranslation(currentLocale, 'research.convolutional_classifier.why_professional')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li><b>Escalabilidad:</b> Fácil de extender a nuevos datasets, arquitecturas y tareas.</li>
-          <li><b>Reproducibilidad:</b> Configuración y scripts versionados, resultados trazables.</li>
-          <li><b>Automatización:</b> Makefile, CI/CD, testing y despliegue continuo.</li>
-          <li><b>Buenas prácticas:</b> Modularidad, documentación, control de calidad y MLOps.</li>
+          {getTranslation(currentLocale, 'research.convolutional_classifier.professional_reasons').map((reason: string, index: number) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: reason }} />
+          ))}
         </ul>
       </div>
 
       {/* Resultados y Métricas */}
       <div className="card-glow">
-        <h4 className="text-xl font-bold text-accent-mint mb-4">Resultados y Métricas</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.convolutional_classifier.results')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li>Entrenamiento y evaluación automatizados</li>
-          <li>Reportes de métricas y visualizaciones</li>
-          <li>Explicabilidad de predicciones</li>
+          {getTranslation(currentLocale, 'research.convolutional_classifier.results_list').map((result: string, index: number) => (
+            <li key={index}>{result}</li>
+          ))}
         </ul>
+      </div>
+
+      {/* Casos de Uso */}
+      <div className="card-glow">
+        <h4 className="text-xl font-bold text-accent-mint mb-4">{getTranslation(currentLocale, 'research.convolutional_classifier.use_cases_section')}</h4>
+        <p className="text-lg text-text-secondary mb-6">
+          {getTranslation(currentLocale, 'research.convolutional_classifier.use_cases_description')}
+        </p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {getTranslation(currentLocale, 'research.convolutional_classifier.use_cases_list').map((useCase: string, index: number) => (
+            <div key={index} className="bg-dark-card border border-border-subtle rounded-lg p-4">
+              <p className="text-text-secondary">{useCase}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* KPIs y Resultados Clave */}
       <div className="bg-dark-card border border-border-subtle rounded-2xl p-8">
-        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">KPIs y Resultados Clave</h4>
+        <h4 className="text-xl font-bold text-accent-mint mb-6 text-center">{getTranslation(currentLocale, 'research.convolutional_classifier.kpis')}</h4>
         <ul className="list-disc pl-6 space-y-2 text-text-secondary">
-          <li><b>Accuracy (Precisión):</b> 94.2%</li>
-          <li><b>F1-Score:</b> 0.941</li>
-          <li><b>ROC-AUC:</b> 0.978</li>
-          <li><b>Recall (Sensibilidad):</b> 93.5%</li>
-          <li><b>Precision:</b> 94.8%</li>
-          <li><b>Tiempo de entrenamiento:</b> 12 min (GPU Tesla T4)</li>
-          <li><b>Comparativa de arquitecturas:</b>
-            <ul className="list-disc pl-6">
-              <li>ResNet50: 93.8% accuracy</li>
-              <li>EfficientNetB0: 94.2% accuracy</li>
-              <li>Vision Transformer: 92.7% accuracy</li>
-            </ul>
-          </li>
-          <li><b>Desbalanceo resuelto:</b> <span className="text-green-600">Sí</span> (oversampling y class weights)</li>
+          {getTranslation(currentLocale, 'research.convolutional_classifier.kpis_list').map((kpi: string, index: number) => (
+            <li key={index} dangerouslySetInnerHTML={{ __html: kpi }} />
+          ))}
         </ul>
       </div>
 
       {/* Footer */}
       <div className="text-center mt-8">
-        <b>¿Te interesa ver el código o una demo?</b> <br />
-        <a href="https://github.com/tu_usuario/convolutional_classifier" target="_blank" className="text-accent-mint underline">Repositorio en GitHub</a>
+        <b>{getTranslation(currentLocale, 'research.convolutional_classifier.footer')}</b> <br />
+                    <a href="https://github.com/Nicolascard995/convolutional_classifierr" target="_blank" className="text-accent-mint underline">{getTranslation(currentLocale, 'research.convolutional_classifier.github_link')}</a>
       </div>
     </div>
   );

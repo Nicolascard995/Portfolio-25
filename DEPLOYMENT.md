@@ -1,5 +1,39 @@
 # Despliegue en Render
 
+## 🚀 Pasos Simples para Render
+
+### 1. Crear cuenta en Render
+- Ve a [render.com](https://render.com)
+- Regístrate con tu cuenta de GitHub
+
+### 2. Conectar repositorio
+- Haz clic en "New +"
+- Selecciona "Blueprint" (Render detectará automáticamente tus archivos `render.yaml`)
+- Conecta tu repositorio: `Nicolascard995/Portfolio-25`
+
+### 3. Configurar variables (solo backend)
+- En el servicio del backend, ve a "Environment"
+- Agrega esta variable:
+  - **Key**: `OPENAI_API_KEY`
+  - **Value**: Tu clave de OpenAI
+
+### 4. Esperar despliegue
+- Render desplegará automáticamente:
+  - ✅ Base de datos PostgreSQL
+  - ✅ Backend (FastAPI)
+  - ✅ Frontend (Next.js)
+- Tiempo estimado: 5-10 minutos
+
+### 5. Verificar que funciona
+- Backend: https://dozotech-backend.onrender.com/health
+- Frontend: https://dozotech-frontend.onrender.com
+
+### 6. Configurar DNS (opcional, después)
+- `www.dozo.tech` → `dozotech-frontend.onrender.com`
+- `api.dozo.tech` → `dozotech-backend.onrender.com`
+
+---
+
 ## Configuración Actual
 
 ### Frontend (Next.js)

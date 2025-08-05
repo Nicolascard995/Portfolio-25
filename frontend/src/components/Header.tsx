@@ -25,7 +25,7 @@ const Header = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          <Link href={`/${currentLocale}`} className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="relative group">
               <DozoTechLogo 
                 size="lg" 
@@ -37,7 +37,7 @@ const Header = () => {
               <span className="text-xl font-bold text-gradient font-dozotech">DOZO</span>
               <span className="text-xs text-text-muted leading-none font-mono">Sistemas que Respiran</span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -56,9 +56,9 @@ const Header = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageSelector />
-            <button className="btn-primary text-sm px-6 py-2">
+            <a href={`/${currentLocale}#contacto`} className="btn-primary text-sm px-6 py-2">
               Empezar ahora
-            </button>
+            </a>
           </div>
 
           {/* Mobile menu button */}

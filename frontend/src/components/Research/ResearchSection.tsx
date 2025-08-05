@@ -6,33 +6,37 @@ import MLProject from './MLProject'
 import FruitClassifierProject from './FruitClassifierProject'
 import PyTorchProject from './PyTorchProject'
 import ConvolutionalClassifierProject from './ConvolutionalClassifierProject'
+import { getTranslation } from '@/config/translations'
+import { useParams } from 'next/navigation'
 
 const ResearchSection = () => {
   const [activeProject, setActiveProject] = useState(0)
+  const params = useParams();
+  const currentLocale = params.locale as string;
 
   const projects = [
     {
       id: 'ml-project',
-      title: 'ML Avanzado',
-      description: 'Machine Learning con visualizaciones',
+      title: getTranslation(currentLocale, 'research.projects.ml_project.title'),
+      description: getTranslation(currentLocale, 'research.projects.ml_project.description'),
       component: <MLProject />
     },
     {
       id: 'fruit-classifier',
-      title: 'Computer Vision',
-      description: 'Clasificador de frutas con IA',
+      title: getTranslation(currentLocale, 'research.projects.fruit_classifier.title'),
+      description: getTranslation(currentLocale, 'research.projects.fruit_classifier.description'),
       component: <FruitClassifierProject />
     },
     {
       id: 'pytorch',
-      title: 'PyTorch IA',
-      description: 'Soluciones personalizadas y éticas',
+      title: getTranslation(currentLocale, 'research.projects.pytorch.title'),
+      description: getTranslation(currentLocale, 'research.projects.pytorch.description'),
       component: <PyTorchProject />
     },
     {
       id: 'convolutional-classifier',
-      title: 'Clasificador Convolucional Avanzado',
-      description: 'Deep learning profesional para vehículos',
+      title: getTranslation(currentLocale, 'research.projects.convolutional_classifier.title'),
+      description: getTranslation(currentLocale, 'research.projects.convolutional_classifier.description'),
       component: <ConvolutionalClassifierProject />
     }
   ]
@@ -50,14 +54,14 @@ const ResearchSection = () => {
                 className="text-accent-mint"
                 aria-label="Brain icon"
               />
-              <span className="text-sm font-mono text-text-secondary">INVESTIGACIÓN Y PROYECTOS</span>
+              <span className="text-sm font-mono text-text-secondary">{getTranslation(currentLocale, 'research.badge')}</span>
             </div>
             
             <h2 className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight">
-              <span className="text-gradient">Portfolio de Investigación</span>
+              <span className="text-gradient">{getTranslation(currentLocale, 'research.title')}</span>
             </h2>
             <p className="text-lg md:text-xl text-text-secondary leading-relaxed max-w-3xl mx-auto">
-              Proyectos de Machine Learning, Computer Vision y análisis avanzado de datos
+              {getTranslation(currentLocale, 'research.description')}
             </p>
           </div>
 
@@ -97,7 +101,7 @@ const ResearchSection = () => {
             
             {/* Indicador de scroll */}
             <div className="absolute bottom-4 right-4 text-xs text-text-muted opacity-50">
-              Desplázate para ver más contenido
+              {getTranslation(currentLocale, 'research.scroll_indicator')}
             </div>
           </div>
 
@@ -109,7 +113,7 @@ const ResearchSection = () => {
               className="btn-ghost btn-icon-left px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ActionIcons.ArrowLeft size="sm" />
-              <span>Anterior</span>
+              <span>{getTranslation(currentLocale, 'research.navigation.previous')}</span>
             </button>
             
             <div className="flex items-center space-x-2">
@@ -120,7 +124,7 @@ const ResearchSection = () => {
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
                     activeProject === index ? 'bg-accent-mint w-8' : 'bg-border-subtle hover:bg-accent-mint/50'
                   }`}
-                  aria-label={`Ir al proyecto ${index + 1}`}
+                  aria-label={`${getTranslation(currentLocale, 'research.navigation.go_to_project')} ${index + 1}`}
                 />
               ))}
             </div>
@@ -130,7 +134,7 @@ const ResearchSection = () => {
               disabled={activeProject === projects.length - 1}
               className="btn-ghost btn-icon-right px-4 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span>Siguiente</span>
+              <span>{getTranslation(currentLocale, 'research.navigation.next')}</span>
               <NavigationIcons.ArrowRight size="sm" />
             </button>
           </div>

@@ -87,7 +87,9 @@ export const FeatureIcons = {
 export const ActionIcons = {
   Calendar: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').Calendar} context="action" {...props} />,
   Send: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').Send} context="action" {...props} />,
-  ArrowLeft: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').ArrowLeft} context="action" {...props} />
+  ArrowLeft: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').ArrowLeft} context="action" {...props} />,
+  RefreshCw: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').RefreshCw} context="action" {...props} />,
+  Home: (props: Omit<IconProps, 'icon'>) => <Icon icon={require('lucide-react').Home} context="action" {...props} />
 }
 
 export const ContactIcons = {
