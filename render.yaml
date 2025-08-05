@@ -3,7 +3,6 @@ services:
     name: dozotech-db
     env: postgresql
     plan: free
-    maxConnections: 10
 
   - type: web
     name: dozotech-backend
