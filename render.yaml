@@ -1,8 +1,8 @@
 services:
   - type: pserv
     name: dozotech-db
-    env: postgresql
     plan: free
+    startCommand: postgres
 
   - type: web
     name: dozotech-backend
