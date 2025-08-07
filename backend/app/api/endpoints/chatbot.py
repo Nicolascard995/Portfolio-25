@@ -1,6 +1,5 @@
-from fastapi import APIRouter, File, UploadFile, Form, HTTPException, Depends
+from fastapi import APIRouter, File, UploadFile, Form, HTTPException, Query
 from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
 import pandas as pd
 import json
 import io
@@ -18,9 +17,7 @@ from app.api.schemas import (
     ErrorResponse
 )
 from app.core.config import settings
-from app.db.base import get_db
-from app.db.models import ChatLog
-from fastapi import Query
+from app.db.supabase import supabase_service
 
 router = APIRouter()
 
@@ -100,10 +97,7 @@ async def process_file(file: UploadFile) -> dict:
 
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat_with_assistant(
-    request: ChatRequest,
-    db: Session = Depends(get_db)
-):
+async def chat_with_assistant(request: ChatRequest):
     """
     Chat general con el asistente de Dozo.Tech (solo ChatGPT)
     """
@@ -112,17 +106,20 @@ async def chat_with_assistant(
     try:
         llm_response = await LLMService.call_openai(request.mensaje)
         response_time = time.time() - start_time
-        chat_log = ChatLog(
-            session_id=session_id,
-            tipo_interaccion="chat",
-            mensaje_usuario=request.mensaje,
-            respuesta_llm=llm_response["response"],
-            modelo_usado=llm_response["model"],
-            tokens_utilizados=llm_response["tokens"],
-            tiempo_respuesta=int(response_time * 1000)
-        )
-        db.add(chat_log)
-        db.commit()
+        
+        # Crear log en Supabase
+        log_data = {
+            "session_id": session_id,
+            "tipo_interaccion": "chat",
+            "mensaje_usuario": request.mensaje,
+            "respuesta_llm": llm_response["response"],
+            "modelo_usado": llm_response["model"],
+            "tokens_utilizados": llm_response["tokens"],
+            "tiempo_respuesta": int(response_time * 1000)
+        }
+        
+        await supabase_service.create_chat_log(log_data)
+        
         return ChatResponse(
             respuesta=llm_response["response"],
             modelo_usado=LLMModel.OPENAI,
@@ -138,8 +135,7 @@ async def chat_with_assistant(
 async def analyze_file(
     file: UploadFile = File(...),
     prompt: str = Form(...),
-    session_id: Optional[str] = Form(None),
-    db: Session = Depends(get_db)
+    session_id: Optional[str] = Form(None)
 ):
     """
     Analiza archivo subido con IA (solo ChatGPT)
@@ -168,19 +164,22 @@ async def analyze_file(
                 datos_grafico = json.loads(json_data)
             except:
                 pass
-        chat_log = ChatLog(
-            session_id=session_id,
-            tipo_interaccion="analyze",
-            mensaje_usuario=prompt,
-            archivo_nombre=file.filename,
-            archivo_tipo=file_extension,
-            respuesta_llm=llm_response["response"],
-            modelo_usado=llm_response["model"],
-            tokens_utilizados=llm_response["tokens"],
-            tiempo_respuesta=int(response_time * 1000)
-        )
-        db.add(chat_log)
-        db.commit()
+        
+        # Crear log en Supabase
+        log_data = {
+            "session_id": session_id,
+            "tipo_interaccion": "analyze",
+            "mensaje_usuario": prompt,
+            "archivo_nombre": file.filename,
+            "archivo_tipo": file_extension,
+            "respuesta_llm": llm_response["response"],
+            "modelo_usado": llm_response["model"],
+            "tokens_utilizados": llm_response["tokens"],
+            "tiempo_respuesta": int(response_time * 1000)
+        }
+        
+        await supabase_service.create_chat_log(log_data)
+        
         return ChatResponse(
             respuesta=llm_response["response"],
             modelo_usado=LLMModel.OPENAI,
@@ -196,30 +195,13 @@ async def analyze_file(
 
 
 @router.get("/logs", response_model=List[dict])
-async def get_chat_logs(
-    limit: int = Query(100, ge=1, le=500),
-    db: Session = Depends(get_db)
-):
+async def get_chat_logs(limit: int = Query(100, ge=1, le=500)):
     """
     Devuelve los últimos logs de interacciones del chatbot (máx 500).
     NOTA: Agregar autenticación para uso en producción.
     """
-    logs = db.query(ChatLog).order_by(ChatLog.fecha_creacion.desc()).limit(limit).all()
-    # Serializar los logs manualmente para evitar problemas con objetos no serializables
-    return [
-        {
-            "id": log.id,
-            "session_id": log.session_id,
-            "tipo_interaccion": log.tipo_interaccion,
-            "mensaje_usuario": log.mensaje_usuario,
-            "archivo_nombre": log.archivo_nombre,
-            "archivo_tipo": log.archivo_tipo,
-            "respuesta_llm": log.respuesta_llm,
-            "modelo_usado": log.modelo_usado,
-            "tokens_utilizados": log.tokens_utilizados,
-            "fecha_creacion": log.fecha_creacion.isoformat() if log.fecha_creacion else None,
-            "tiempo_respuesta": log.tiempo_respuesta,
-            "ip_address": log.ip_address,
-        }
-        for log in logs
-    ] 
+    try:
+        logs = await supabase_service.get_chat_logs(limit)
+        return logs
+    except Exception as e:
+        return [] 

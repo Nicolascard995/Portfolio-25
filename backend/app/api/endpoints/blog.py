@@ -1,5 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, Query
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Query
 from typing import List, Optional
 import json
 from datetime import datetime
@@ -11,8 +10,7 @@ from app.api.schemas import (
     MessageResponse
 )
 from app.core.config import settings
-from app.db.base import get_db
-from app.db.models import BlogPost
+from app.db.supabase import supabase_service
 
 router = APIRouter()
 
@@ -22,44 +20,33 @@ async def get_blog_posts(
     limit: int = Query(10, ge=1, le=50),
     offset: int = Query(0, ge=0),
     categoria: Optional[str] = None,
-    publicado: bool = True,
-    db: Session = Depends(get_db)
+    publicado: bool = True
 ):
     """
     Obtener lista de artículos del blog
     """
     try:
-        query = db.query(BlogPost).filter(BlogPost.publicado == publicado)
-        
-        if categoria:
-            query = query.filter(BlogPost.categoria == categoria)
-        
-        posts = query.order_by(BlogPost.fecha_publicacion.desc())\
-                    .offset(offset)\
-                    .limit(limit)\
-                    .all()
-        
+        posts = await supabase_service.get_blog_posts(limit, offset, categoria, publicado)
         return posts
         
     except Exception as e:
-        # Retornar datos demo si hay error con la DB
+        # Retornar datos demo si hay error con Supabase
         return get_demo_blog_posts()
 
 
 @router.get("/posts/{post_id}", response_model=BlogPostResponse)
-async def get_blog_post(post_id: int, db: Session = Depends(get_db)):
+async def get_blog_post(post_id: int):
     """
     Obtener un artículo específico del blog
     """
     try:
-        post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
+        post = await supabase_service.get_blog_post(post_id)
         
         if not post:
             raise HTTPException(status_code=404, detail="Artículo no encontrado")
         
         # Incrementar contador de vistas
-        post.vistas += 1
-        db.commit()
+        await supabase_service.increment_blog_views(post_id)
         
         return post
         
@@ -71,19 +58,18 @@ async def get_blog_post(post_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/posts/slug/{slug}", response_model=BlogPostResponse)
-async def get_blog_post_by_slug(slug: str, db: Session = Depends(get_db)):
+async def get_blog_post_by_slug(slug: str):
     """
     Obtener artículo por slug (URL amigable)
     """
     try:
-        post = db.query(BlogPost).filter(BlogPost.slug == slug).first()
+        post = await supabase_service.get_blog_post_by_slug(slug)
         
         if not post:
             raise HTTPException(status_code=404, detail="Artículo no encontrado")
         
         # Incrementar contador de vistas
-        post.vistas += 1
-        db.commit()
+        await supabase_service.increment_blog_views(post["id"])
         
         return post
         
@@ -94,10 +80,7 @@ async def get_blog_post_by_slug(slug: str, db: Session = Depends(get_db)):
 
 
 @router.post("/posts", response_model=BlogPostResponse)
-async def create_blog_post(
-    post_data: BlogPostCreate,
-    db: Session = Depends(get_db)
-):
+async def create_blog_post(post_data: BlogPostCreate):
     """
     Crear nuevo artículo (solo admin)
     TODO: Implementar autenticación
@@ -106,28 +89,32 @@ async def create_blog_post(
         # Convertir tags a JSON string
         tags_json = json.dumps(post_data.tags) if post_data.tags else None
         
-        new_post = BlogPost(
-            titulo=post_data.titulo,
-            slug=post_data.slug,
-            resumen=post_data.resumen,
-            contenido=post_data.contenido,
-            categoria=post_data.categoria,
-            tags=tags_json,
-            imagen_url=post_data.imagen_url,
-            publicado=post_data.publicado,
-            meta_description=post_data.meta_description,
-            meta_keywords=post_data.meta_keywords,
-            fecha_publicacion=datetime.now() if post_data.publicado else None
-        )
+        post_dict = {
+            "titulo": post_data.titulo,
+            "slug": post_data.slug,
+            "resumen": post_data.resumen,
+            "contenido": post_data.contenido,
+            "categoria": post_data.categoria,
+            "tags": tags_json,
+            "imagen_url": post_data.imagen_url,
+            "publicado": post_data.publicado,
+            "meta_description": post_data.meta_description,
+            "meta_keywords": post_data.meta_keywords,
+            "fecha_publicacion": datetime.now().isoformat() if post_data.publicado else None,
+            "vistas": 0
+        }
         
-        db.add(new_post)
-        db.commit()
-        db.refresh(new_post)
+        new_post = await supabase_service.create_blog_post(post_dict)
+        
+        if not new_post:
+            raise HTTPException(
+                status_code=500,
+                detail="Error al crear el artículo en la base de datos"
+            )
         
         return new_post
         
     except Exception as e:
-        db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Error al crear artículo: {str(e)}"

@@ -1,37 +1,21 @@
-# Dozo.Tech – Inteligencia en Acción para tu Negocio
+# Dozo.Tech Portfolio - Backend
 
-## Concepto Central
+Backend API para el portafolio de Dozo.Tech, construido con FastAPI y Supabase.
 
-**Dozo.Tech** es tu aliado estratégico en eficiencia operativa y generación de insights para PYMES, fusionando experiencia práctica en gestión (gastronomía, emprendimiento) con el poder de la Ciencia de Datos y la Inteligencia Artificial.
-
-### Propuesta de Valor Única (PVU)
-
-> "En Dozo.Tech, transformo los desafíos operativos de tu negocio en ventajas competitivas. Mi experiencia como emprendedor y chef, combinada con Ciencia de Datos y Agentes de IA, me permite automatizar tareas, optimizar la gestión de personal y generar insights de mercado que impulsan la eficiencia y la rentabilidad. No solo te muestro los datos, te doy las herramientas para actuar."
-
----
-
-## 🚀 Instalación y Configuración
-
-### Prerrequisitos
-
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL
-- Git
+## 🚀 Configuración Rápida
 
 ### Configuración del Backend
 
 1. **Clonar el repositorio**:
    ```bash
-   git clone <tu-repositorio>
-   cd dozotech_pf
+   git clone <repository-url>
+   cd dozotech_pf/backend
    ```
 
-2. **Configurar el entorno virtual**:
+2. **Crear entorno virtual**:
    ```bash
-   cd backend
-   python -m venv .venv
-   source .venv/bin/activate  # En Windows: .venv\Scripts\activate
+   python -m venv venv
+   source venv/bin/activate  # En Windows: venv\Scripts\activate
    ```
 
 3. **Instalar dependencias**:
@@ -41,19 +25,16 @@
    uv sync
    ```
 
-4. **Configurar variables de entorno**:
+4. **Configurar Supabase**:
    ```bash
-   cp .env.example .env
-   # Editar .env con tus credenciales reales
+   # Crear proyecto en Supabase (https://supabase.com)
+   # Ejecutar el script supabase_schema.sql en el SQL Editor
    ```
 
-5. **Configurar la base de datos**:
+5. **Configurar variables de entorno**:
    ```bash
-   # Crear base de datos PostgreSQL
-   createdb dozotech_db
-   
-   # Ejecutar migraciones
-   alembic upgrade head
+   cp env.example .env
+   # Editar .env con tus credenciales de Supabase
    ```
 
 6. **Ejecutar el servidor**:
@@ -71,7 +52,7 @@
 
 2. **Configurar variables de entorno**:
    ```bash
-   cp .env.example .env.local
+   cp env.example .env.local
    # Editar .env.local con la URL del backend
    ```
 
@@ -89,12 +70,13 @@ dozotech_pf/
 ├── backend/
 │   ├── app/
 │   │   ├── core/ (configuración, dependencias de IA)
-│   │   ├── db/ (conexión a DB, modelos)
+│   │   ├── db/ (conexión a Supabase)
 │   │   ├── api/ (endpoints: chatbot, leads, blog)
 │   │   ├── main.py (aplicación FastAPI principal)
 │   │   └── __init__.py
 │   ├── pyproject.toml
-│   ├── .env.example
+│   ├── env.example
+│   ├── supabase_schema.sql
 │   └── Dockerfile
 ├── frontend/
 │   ├── public/
@@ -104,7 +86,7 @@ dozotech_pf/
 │   │   ├── styles/
 │   │   └── App.js (o index.js)
 │   ├── package.json
-│   ├── .env.example
+│   ├── env.example
 │   └── next.config.js
 ├── docker-compose.yml
 ├── .gitignore
@@ -117,10 +99,11 @@ dozotech_pf/
 
 ### Backend (FastAPI)
 - `fastapi`, `uvicorn`: Base del API
-- `sqlalchemy`, `psycopg2-binary`: PostgreSQL
+- `supabase`: Base de datos en la nube
 - `pydantic-settings`, `python-dotenv`: Configuración
 - `httpx`: Llamadas a APIs externas de LLMs
 - `pandas`, `openpyxl`, `xlrd`: Procesamiento de datos
+- `openai`: Integración con ChatGPT
 
 ### Frontend (React/Next.js)
 - `react`, `react-dom`, `next`: Frameworks UI
@@ -137,14 +120,22 @@ dozotech_pf/
 
 **Backend (.env)**:
 ```env
-DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/nombre_base_datos
-OPENAI_API_KEY=tu-api-key-de-openai
-SECRET_KEY=tu-clave-secreta-muy-larga-y-segura
+# Supabase Configuration
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key
+
+# Security
+SECRET_KEY=your-secret-key-change-in-production
 ```
 
 **Frontend (.env.local)**:
 ```env
-NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+NEXT_PUBLIC_API_URL=http://localhost:8000
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 ### Archivos Sensibles (NO subir a Git)

@@ -104,10 +104,15 @@ app.include_router(blog.router, prefix="/api/v1/blog", tags=["blog"])
 
 if __name__ == "__main__":
     import uvicorn
+    import os
+    
+    # Obtener el puerto de la variable de entorno PORT (Cloud Run)
+    port = int(os.getenv("PORT", 8000))
+    
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=8000,
-        reload=True,
+        port=port,
+        reload=False,  # Deshabilitar reload en producción
         log_level="info"
     ) 

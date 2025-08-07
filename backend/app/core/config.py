@@ -3,7 +3,11 @@ from typing import Optional
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Carga las variables del .env
+# Cargar variables de entorno de forma segura
+try:
+    load_dotenv()
+except Exception:
+    pass  # Si no existe .env, continuar sin error
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -17,8 +21,10 @@ class Settings(BaseSettings):
     VERSION: str = "0.1.0"
     DESCRIPTION: str = "Backend API para el portafolio de Dozo.Tech - Inteligencia en Acción para tu Negocio"
     
-    # Base de datos
-    DATABASE_URL: str = "postgresql://user:password@localhost:5432/dozotech_db"
+    # Supabase Configuration
+    SUPABASE_URL: Optional[str] = os.getenv("SUPABASE_URL")
+    SUPABASE_KEY: Optional[str] = os.getenv("SUPABASE_KEY")
+    SUPABASE_SERVICE_ROLE_KEY: Optional[str] = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
     
     # APIs de LLMs
     OPENAI_API_KEY: Optional[str] = OPENAI_API_KEY
@@ -56,7 +62,7 @@ class Settings(BaseSettings):
     RATE_LIMIT_PER_MINUTE: int = 60
     
     # Google Calendar
-    GOOGLE_CALENDAR_CREDENTIALS: Optional[str] = os.getenv("GOOGLE_CALENDAR_CREDENTIALS")  # Ruta al archivo JSON de credenciales
+    GOOGLE_CALENDAR_CREDENTIALS: Optional[str] = None
     GOOGLE_CALENDAR_ID: Optional[str] = os.getenv("GOOGLE_CALENDAR_ID")  # ID del calendario
     
     class Config:

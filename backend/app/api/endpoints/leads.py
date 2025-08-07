@@ -1,12 +1,10 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, Request
 from typing import List
 import datetime
 
 from app.api.schemas import LeadCreate, LeadResponse, MessageResponse
 from app.core.config import settings
-from app.db.base import get_db
-from app.db.models import Lead
+from app.db.supabase import supabase_service
 
 router = APIRouter()
 
@@ -14,8 +12,7 @@ router = APIRouter()
 @router.post("/", response_model=LeadResponse)
 async def create_lead(
     lead_data: LeadCreate,
-    request: Request,
-    db: Session = Depends(get_db)
+    request: Request
 ):
     """
     Crear un nuevo lead desde el formulario de contacto
@@ -25,33 +22,35 @@ async def create_lead(
         client_ip = request.client.host
         user_agent = request.headers.get("user-agent", "")
         
-        # Crear nuevo lead
-        new_lead = Lead(
-            nombre=lead_data.nombre,
-            email=lead_data.email,
-            mensaje=lead_data.mensaje,
-            telefono=lead_data.telefono,
-            empresa=lead_data.empresa,
-            sector=lead_data.sector,
-            ip_address=client_ip,
-            user_agent=user_agent[:500] if user_agent else None  # Limitar tamaño
-        )
+        # Preparar datos para Supabase
+        lead_dict = {
+            "nombre": lead_data.nombre,
+            "email": lead_data.email,
+            "mensaje": lead_data.mensaje,
+            "telefono": lead_data.telefono,
+            "empresa": lead_data.empresa,
+            "sector": lead_data.sector,
+            "ip_address": client_ip,
+            "user_agent": user_agent[:500] if user_agent else None,  # Limitar tamaño
+            "processed": False
+        }
         
-        db.add(new_lead)
-        db.commit()
-        db.refresh(new_lead)
+        # Crear lead en Supabase
+        new_lead = await supabase_service.create_lead(lead_dict)
         
-        # TODO: Enviar notificación por email a nicolas@dozo.tech
-        # await send_lead_notification(new_lead)
+        if not new_lead:
+            raise HTTPException(
+                status_code=500,
+                detail="Error al crear el lead en la base de datos"
+            )
         
         return LeadResponse(
             mensaje="¡Gracias por tu interés en Dozo.Tech! Te contactaré pronto para explorar cómo puedo ayudarte a optimizar tu negocio con IA.",
-            lead_id=new_lead.id,
-            fecha_creacion=new_lead.fecha_creacion
+            lead_id=new_lead["id"],
+            fecha_creacion=new_lead["fecha_creacion"]
         )
         
     except Exception as e:
-        db.rollback()
         raise HTTPException(
             status_code=500,
             detail=f"Error al procesar tu solicitud: {str(e)}"
@@ -103,26 +102,17 @@ async def get_demo_leads():
 
 
 @router.get("/stats")
-async def get_lead_stats(db: Session = Depends(get_db)):
+async def get_lead_stats():
     """
     Estadísticas básicas de leads (para dashboard administrativo)
     """
     try:
-        total_leads = db.query(Lead).count()
-        leads_today = db.query(Lead).filter(
-            Lead.fecha_creacion >= datetime.date.today()
-        ).count()
-        
-        # Distribución por sector
-        sectores = db.query(Lead.sector).filter(Lead.sector.isnot(None)).all()
-        sector_count = {}
-        for (sector,) in sectores:
-            sector_count[sector] = sector_count.get(sector, 0) + 1
+        stats = await supabase_service.get_leads_stats()
         
         return {
-            "total_leads": total_leads,
-            "leads_hoy": leads_today,
-            "distribucion_sectores": sector_count,
+            "total_leads": stats["total_leads"],
+            "leads_hoy": stats["leads_hoy"],
+            "distribucion_sectores": stats["distribucion_sectores"],
             "mensaje": "Estadísticas de Dozo.Tech - Generando interés en automatización con IA"
         }
         
@@ -167,15 +157,15 @@ async def contact_demo():
         "mensaje": "✅ Lead demo creado exitosamente",
         "lead": demo_lead,
         "siguiente_paso": "Nicolás se contactará en las próximas 24 horas",
-        "nota": "En producción, esto se guardaría en la base de datos y enviaría una notificación"
+        "nota": "En producción, esto se guardaría en Supabase y enviaría una notificación"
     }
 
 
-async def send_lead_notification(lead: Lead):
+async def send_lead_notification(lead_data: dict):
     """
     Función placeholder para enviar notificación de nuevo lead
     En producción, aquí se implementaría el envío de email
     """
     # TODO: Implementar con SMTP o servicio de email
-    print(f"📧 Nuevo lead: {lead.nombre} ({lead.email}) - {lead.empresa}")
+    print(f"📧 Nuevo lead: {lead_data['nombre']} ({lead_data['email']}) - {lead_data['empresa']}")
     pass 
